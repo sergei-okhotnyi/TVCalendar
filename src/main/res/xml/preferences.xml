@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Content">
+
+        <ListPreference
+            android:defaultValue="en"
+            android:entries="@array/lang_name"
+            android:entryValues="@array/lang_iso"
+            android:key="preferred_language"
+            android:title="Language" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Feedback">
+        <Preference
+            android:summary="Send email directly to developer with you suggestions"
+            android:title="Send email">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="mailto:okhotny@gmail.com?subject=[TV Calendar] Feedback" />
+        </Preference>
+        <Preference
+            android:summary="Rate application and leave your comment on Google Play"
+            android:title="Rate application">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="market://details?id=dev.okhotny.TVCalendar" />
+
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TV Calendar</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string name="sync_now">Synchronize now</string>
+    <string name="search_hint">Enter title</string>
+    <string name="no_data">No results found</string>
+    <string name="main_no_data">No favored series yet.\nUse search to add one.</string>
+    <string name="thumbnail">thumbnail</string>
+</resources>

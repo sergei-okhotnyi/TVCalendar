@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/airtime_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="4dp"
+        android:text="Air time:" />
+
+    <TextView
+        android:id="@+id/airtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/airtime_label"
+        android:layout_toRightOf="@id/airtime_label" />
+
+    <TextView
+        android:id="@+id/firstaired_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/airtime_label"
+        android:paddingRight="4dp"
+        android:text="Premiered:" />
+
+    <TextView
+        android:id="@+id/firstaired"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/firstaired_label"
+        android:layout_toRightOf="@id/firstaired_label" />
+
+    <TextView
+        android:id="@+id/runtime_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/firstaired_label"
+        android:paddingRight="4dp"
+        android:text="Runtime:" />
+
+    <TextView
+        android:id="@+id/runtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/runtime_label"
+        android:layout_toRightOf="@id/runtime_label" />
+
+    <TextView
+        android:id="@+id/genre_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runtime_label"
+        android:paddingRight="4dp"
+        android:text="Genre:" />
+
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/genre_label"
+        android:layout_toRightOf="@id/genre_label" />
+
+
+</RelativeLayout>

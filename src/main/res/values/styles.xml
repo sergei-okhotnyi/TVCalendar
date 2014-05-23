@@ -1,0 +1,24 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowBackground">@color/main_background</item>
+    </style>
+
+    <style name="AppTheme.Transparent" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/main_background</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle.Transparent</item>
+    </style>
+
+    <style name="ActionBarStyle.Transparent" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <item name="android:background">@null</item>
+        <item name="android:displayOptions">homeAsUp|showTitle</item>
+    </style>
+
+    <style name="card.expand_simple_text" parent="card.expand_simple_title">
+        <item name="android:textColor">@color/card_text_color_header</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,55 @@
+apply plugin: 'android'
+apply plugin: 'crashlytics'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.0'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+
+    compile 'com.android.support:support-v4:19.+'
+    compile 'com.google.android.gms:play-services:4.+'
+    compile 'com.github.gabrielemariotti.cards:library:1.5.0'
+    compile 'com.nhaarman.listviewanimations:library:2.6.0'
+    compile 'com.mcxiaoke.volley:library:1.0.+'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.crashlytics.android:crashlytics:1.+'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile project(':UserVoiceSDK')
+
+
+}
