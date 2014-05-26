@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.uservoice.uservoicesdk.UserVoice;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -137,7 +136,7 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
                         updateBanner();
                     }
                 });
-                TraktTvApi.getSeriesShouts(seriesID, new SimpleCallback<List<Comment>>() {
+                TraktTvApi.getSeriesReviews(seriesID, new SimpleCallback<List<Comment>>() {
                     @Override
                     public void done(List<Comment> result) {
                         mReviews = result;

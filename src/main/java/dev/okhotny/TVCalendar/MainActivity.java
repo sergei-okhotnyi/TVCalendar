@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.crittercism.app.Crittercism;
 
-import com.crashlytics.android.Crashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,8 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics.start(this);
+
+        Crittercism.initialize(getApplicationContext(), getString(R.string.crittercism_apikey));
 
         setContentView(R.layout.main);
         setTitle(R.string.app_name);
