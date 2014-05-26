@@ -29,13 +29,16 @@ import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardListView;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class MainActivity extends Activity {
     private CardListView mListView;
-    private View mProgress;
     private TextView mEmpty;
     private CardArrayAdapter mAgendaAdapter;
     private AsyncTask<Void, Void, List<Card>> mTask;
+    private PullToRefreshLayout mPullToRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,20 @@ public class MainActivity extends Activity {
         setTitle(R.string.app_name);
 
         mListView = (CardListView) findViewById(android.R.id.list);
-        mProgress = findViewById(android.R.id.progress);
         mEmpty = (TextView) findViewById(android.R.id.empty);
+
+        mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pull_to_refresh);
+
+        // Now setup the PullToRefreshLayout
+        ActionBarPullToRefresh.from(this)
+                .allChildrenArePullable()
+                .listener(new OnRefreshListener() {
+                    @Override
+                    public void onRefreshStarted(View view) {
+                        refreshAgendaAdapter();
+                    }
+                })
+                .setup(mPullToRefreshLayout);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -69,14 +84,6 @@ public class MainActivity extends Activity {
         mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
         refreshAgendaAdapter();
-    }
-
-    private void showProcessIndicator() {
-        //To Do change body of created methods use File | Settings | File Templates.
-    }
-
-    private void hideProcessindicator() {
-        //To Do change body of created methods use File | Settings | File Templates.
     }
 
     private void openEpisodeDetails(AgendaModel item) {
@@ -102,11 +109,10 @@ public class MainActivity extends Activity {
             @Override
             protected void onPreExecute() {
                 if (mAgendaAdapter == null) {
-                    mProgress.setVisibility(View.VISIBLE);
+                    mPullToRefreshLayout.setRefreshing(true);
                     mListView.setVisibility(View.GONE);
                     mEmpty.setVisibility(View.GONE);
                 }
-                showProcessIndicator();
             }
 
             @Override
@@ -127,7 +133,7 @@ public class MainActivity extends Activity {
                 if (isFinishing() || isCancelled()) {
                     return;
                 }
-                mProgress.setVisibility(View.GONE);
+                mPullToRefreshLayout.setRefreshing(false);
                 if (episodes == null || episodes.isEmpty()) {
                     mListView.setVisibility(View.GONE);
                     mEmpty.setVisibility(View.VISIBLE);
@@ -143,7 +149,6 @@ public class MainActivity extends Activity {
 //                        mListView.setExternalAdapter(animCardArrayAdapter, mAgendaAdapter);
 //                    }
                 }
-                hideProcessindicator();
             }
         }.execute();
     }

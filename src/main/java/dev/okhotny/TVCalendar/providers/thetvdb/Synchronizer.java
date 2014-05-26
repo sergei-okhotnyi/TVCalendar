@@ -19,6 +19,8 @@ import dev.okhotny.TVCalendar.providers.model.Series;
 
 public class Synchronizer {
 
+    private boolean mIsRunning;
+
     public static void sync(boolean force) {
         final Calendar today = Calendar.getInstance();
 
@@ -70,5 +72,15 @@ public class Synchronizer {
                 return null;
             }
         }.execute();
+    }
+
+    public boolean isRunning() {
+        return mIsRunning;
+    }
+
+    public interface Callback {
+        void onProgress(int progress);
+
+        void onDone();
     }
 }
