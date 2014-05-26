@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -202,7 +203,9 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
                                             DatabaseHelper databaseHelper = OpenHelperManager.getHelper(getBaseContext(), DatabaseHelper.class);
                                             try {
                                                 databaseHelper.getSeriesDao().deleteById(mItem.getId());
-                                                databaseHelper.getEpisodeDao().delete(mItem.getEpisodes());
+                                                DeleteBuilder<Episode, String> builder = databaseHelper.getEpisodeDao().deleteBuilder();
+                                                builder.where().eq("seriesId", mItem.getId());
+                                                databaseHelper.getEpisodeDao().delete(builder.prepare());
                                                 mIsItemFavored = false;
                                             } catch (SQLException e) {
                                                 e.printStackTrace();
