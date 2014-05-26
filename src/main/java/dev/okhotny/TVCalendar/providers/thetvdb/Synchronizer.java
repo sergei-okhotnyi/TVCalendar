@@ -9,7 +9,6 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.List;
 
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.database.DatabaseHelper;
@@ -21,10 +20,11 @@ public class Synchronizer {
 
     private boolean mIsRunning;
 
-    public static void sync(boolean force) {
+    public static void sync(boolean force, Callback listener) {
         final Calendar today = Calendar.getInstance();
 
         if (!force && (today.getTimeInMillis() - PreferenceManager.getDefaultSharedPreferences(App.sInstance).getLong("last_sync", 0)) < DateUtils.WEEK_IN_MILLIS) {
+            listener.onDone();
             return;
         }
 
@@ -37,22 +37,21 @@ public class Synchronizer {
                     final Dao<Series, String> seriesDao = helper.getSeriesDao();
                     final Dao<Episode, String> episodeDao = helper.getEpisodeDao();
                     for (Series series : seriesDao.queryForAll()) {
-                        TheTVDBApi.getSeries(series.getId(), true, new SimpleCallback<Series>() {
+                        TheTVDBApi.getAllData(series.getId(), true, new SimpleCallback<Series>() {
                             @Override
                             public void done(Series result) {
-                                if (result != null) {
-                                    try {
-                                        seriesDao.update(result);
-                                    } catch (SQLException e) {
-                                        e.printStackTrace();
-                                    }
+
+                                if (result == null) {
+                                    return;
                                 }
-                            }
-                        });
-                        TheTVDBApi.getAllEpisodes(series.getId(), true, new SimpleCallback<List<Episode>>() {
-                            @Override
-                            public void done(List<Episode> result) {
-                                for (Episode episode : result) {
+
+                                try {
+                                    seriesDao.update(result);
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+
+                                for (Episode episode : result.getEpisodes()) {
                                     try {
                                         Episode old = episodeDao.queryForId(episode.getId());
                                         if (old != null) {

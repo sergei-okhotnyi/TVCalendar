@@ -108,8 +108,8 @@ public class MainActivity extends Activity {
 
             @Override
             protected void onPreExecute() {
+                mPullToRefreshLayout.setRefreshing(true);
                 if (mAgendaAdapter == null) {
-                    mPullToRefreshLayout.setRefreshing(true);
                     mListView.setVisibility(View.GONE);
                     mEmpty.setVisibility(View.GONE);
                 }

@@ -31,7 +31,6 @@ import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.providers.SimpleCallback;
 import dev.okhotny.TVCalendar.providers.model.Actor;
 import dev.okhotny.TVCalendar.providers.model.Banners;
-import dev.okhotny.TVCalendar.providers.model.Episode;
 import dev.okhotny.TVCalendar.providers.model.Series;
 
 /**
@@ -87,7 +86,7 @@ public class TheTVDBApi {
     /**
      * Get all the episodes for a series. Note: This could be a lot of records
      */
-    public static void getAllEpisodes(String id, boolean noCache, SimpleCallback<List<Episode>> callback) {
+    public static void getAllData(String id, boolean noCache, SimpleCallback<Series> callback) {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(API_BASE_URL);
         urlBuilder.append(sApiKey);
@@ -98,7 +97,7 @@ public class TheTVDBApi {
             urlBuilder.append(language).append(XML_EXTENSION);
         }
         String url = urlBuilder.toString();
-        TheTVDBParser.getAllEpisodes(url, callback);
+        TheTVDBParser.getAllData(url, callback);
     }
 
     public static void getBanners(String seriesId, SimpleCallback<Banners> callback) {

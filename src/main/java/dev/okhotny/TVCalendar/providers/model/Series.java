@@ -26,6 +26,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.database.DatabaseHelper;
@@ -71,8 +73,9 @@ public class Series {
     private String fanart;
     @DatabaseField
     private String poster;
-
+    @DatabaseField
     private String actors;
+    private List<Episode> mEpisodes = new ArrayList<Episode>();
 
     public String getId() {
         return id;
@@ -249,4 +252,9 @@ public class Series {
     public void setActors(String actors) {
         this.actors = actors;
     }
+
+    public List<Episode> getEpisodes() {
+        return mEpisodes;
+    }
+
 }

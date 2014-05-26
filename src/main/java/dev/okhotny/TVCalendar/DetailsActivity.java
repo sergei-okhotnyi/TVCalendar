@@ -55,7 +55,6 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
     private SparseArray<Season> mSeasonList;
     private List<Actor> mActorList;
     private Banners mBanners;
-    private List<Episode> mEpisodeList;
     private boolean mIsItemFavored;
     private PagerSlidingTabStrip mTabsStrip;
     private View mHeader;
@@ -99,26 +98,19 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
             OpenHelperManager.releaseHelper();
         }
 
-        TheTVDBApi.getSeries(getIntent().getStringExtra(ARG_SERIES_ID), false, new SimpleCallback<Series>() {
+        TheTVDBApi.getAllData(getIntent().getStringExtra(ARG_SERIES_ID), false, new SimpleCallback<Series>() {
             @Override
             public void done(Series result) {
                 mItem = result;
                 setTitle(mItem.getSeriesName());
+
+                mSeasonList = Season.getSeasons(mItem.getEpisodes());
 
                 mViewPager.setAdapter(new ViewPagerAdapter());
                 mTabsStrip.setViewPager(mViewPager);
 
                 updateBanner();
 
-                TheTVDBApi.getAllEpisodes(seriesID, mIsItemFavored, new SimpleCallback<List<Episode>>() {
-                    @Override
-                    public void done(List<Episode> result) {
-                        mEpisodeList = result;
-                        mSeasonList = Season.getSeasons(result);
-                        mViewPager.getAdapter().notifyDataSetChanged();
-                        mTabsStrip.notifyDataSetChanged();
-                    }
-                });
                 TheTVDBApi.getActors(seriesID, new SimpleCallback<List<Actor>>() {
                     @Override
                     public void done(List<Actor> result) {
@@ -180,7 +172,7 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
     }
 
     private void showConfirmationDialog(final MenuItem mMenuItem) {
-        if (mItem == null || mEpisodeList == null) {
+        if (mItem == null) {
             return;
         }
         new AlertDialog.Builder(DetailsActivity.this)
@@ -210,7 +202,7 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
                                             DatabaseHelper databaseHelper = OpenHelperManager.getHelper(getBaseContext(), DatabaseHelper.class);
                                             try {
                                                 databaseHelper.getSeriesDao().deleteById(mItem.getId());
-                                                databaseHelper.getEpisodeDao().delete(mEpisodeList);
+                                                databaseHelper.getEpisodeDao().delete(mItem.getEpisodes());
                                                 mIsItemFavored = false;
                                             } catch (SQLException e) {
                                                 e.printStackTrace();
@@ -221,7 +213,7 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
                                             DatabaseHelper databaseHelper = OpenHelperManager.getHelper(getBaseContext(), DatabaseHelper.class);
                                             try {
                                                 databaseHelper.getSeriesDao().createIfNotExists(mItem);
-                                                for (Episode e : mEpisodeList) {
+                                                for (Episode e : mItem.getEpisodes()) {
                                                     databaseHelper.getEpisodeDao().createIfNotExists(e);
                                                 }
                                                 mIsItemFavored = true;

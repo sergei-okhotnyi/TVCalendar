@@ -145,120 +145,224 @@ public class TheTVDBParser {
      * @param urlString
      * @param callback
      */
-    public static void getAllEpisodes(String urlString, final SimpleCallback<List<Episode>> callback) {
+    public static void getAllData(String urlString, final SimpleCallback<Series> callback) {
         App.sInstance.requestQueue.add(new StringRequest(urlString, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                final List<Episode> results = new ArrayList<Episode>();
+                final Series results = new Series();
                 final FinalWrapper<Episode> episode = new FinalWrapper<Episode>();
 
                 RootElement root = new RootElement("Data");
 
+                Element seriesElement = root.getChild("Series");
+
+                seriesElement.getChild("id").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setId(s);
+                    }
+                });
+                seriesElement.getChild("Actors").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setActors(s.substring(1, s.length() - 1));
+                    }
+                });
+                seriesElement.getChild("Airs_DayOfWeek").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setAirsDayOfWeek(s);
+                    }
+                });
+                seriesElement.getChild("Airs_Time").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setAirsTime(s);
+                    }
+                });
+                seriesElement.getChild("ContentRating").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setContentRating(s);
+                    }
+                });
+                seriesElement.getChild("FirstAired").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setFirstAired(s);
+                    }
+                });
+                seriesElement.getChild("Genre").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setGenres(TextUtils.isEmpty(s) ? s : s.substring(1, s.length() - 1));
+                    }
+                });
+                seriesElement.getChild("IMDB_ID").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setImdbId(s);
+                    }
+                });
+                seriesElement.getChild("Network").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setNetwork(s);
+                    }
+                });
+                seriesElement.getChild("Overview").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setOverview(s);
+                    }
+                });
+                seriesElement.getChild("Rating").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setRating(s);
+                    }
+                });
+                seriesElement.getChild("Runtime").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setRuntime(s);
+                    }
+                });
+                seriesElement.getChild("SeriesName").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setSeriesName(s);
+                    }
+                });
+                seriesElement.getChild("Status").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setStatus(s);
+                    }
+                });
+                seriesElement.getChild(TYPE_BANNER).setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        if (!TextUtils.isEmpty(s))
+                            results.setBanner(TheTVDBApi.GRAPHICS_BASE_URL + s);
+                    }
+                });
+                seriesElement.getChild(TYPE_FANART).setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        if (!TextUtils.isEmpty(s))
+                            results.setFanart(TheTVDBApi.GRAPHICS_BASE_URL + s);
+                    }
+                });
+
+                seriesElement.getChild(TYPE_POSTER).setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        if (!TextUtils.isEmpty(s))
+                            results.setPoster(TheTVDBApi.GRAPHICS_BASE_URL + s);
+                    }
+                });
+                seriesElement.getChild("zap2it_id").setEndTextElementListener(new EndTextElementListener() {
+                    @Override
+                    public void end(String s) {
+                        results.setZap2ItId(s);
+                    }
+                });
+
                 Element episodeElement = root.getChild("Episode");
 
-                episodeElement.setStartElementListener(new
-
-                                                               StartElementListener() {
-                                                                   @Override
-                                                                   public void start(Attributes attributes) {
-                                                                       episode.value = new Episode();
-                                                                       results.add(episode.value);
-                                                                   }
-                                                               }
+                episodeElement.setStartElementListener(
+                        new StartElementListener() {
+                            @Override
+                            public void start(Attributes attributes) {
+                                episode.value = new Episode();
+                                results.getEpisodes().add(episode.value);
+                            }
+                        }
                 );
 
-                episodeElement.getChild("id").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setId(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("EpisodeName").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setEpisodeName(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("EpisodeNumber").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setEpisodeNumber(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("FirstAired").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setFirstAired(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("IMDB_ID").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setImdbId(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("Overview").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setOverview(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("Rating").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setRating(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("SeasonNumber").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setSeasonNumber(s);
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("filename").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          if (!TextUtils.isEmpty(s)) {
-                                                              episode.value.setFilename(TheTVDBApi.GRAPHICS_BASE_URL + s);
-                                                          }
-                                                      }
-                                                  }
-                        );
-                episodeElement.getChild("seriesid").
-
-                        setEndTextElementListener(new EndTextElementListener() {
-                                                      @Override
-                                                      public void end(String s) {
-                                                          episode.value.setSeriesId(s);
-                                                      }
-                                                  }
-                        );
+                episodeElement.getChild("id").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setId(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("EpisodeName").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setEpisodeName(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("EpisodeNumber").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setEpisodeNumber(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("FirstAired").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setFirstAired(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("IMDB_ID").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setImdbId(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("Overview").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setOverview(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("Rating").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setRating(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("SeasonNumber").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setSeasonNumber(s);
+                            }
+                        }
+                );
+                episodeElement.getChild("filename").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                if (!TextUtils.isEmpty(s)) {
+                                    episode.value.setFilename(TheTVDBApi.GRAPHICS_BASE_URL + s);
+                                }
+                            }
+                        }
+                );
+                episodeElement.getChild("seriesid").setEndTextElementListener(
+                        new EndTextElementListener() {
+                            @Override
+                            public void end(String s) {
+                                episode.value.setSeriesId(s);
+                            }
+                        }
+                );
 
                 try {
                     Xml.parse(response, root.getContentHandler());
