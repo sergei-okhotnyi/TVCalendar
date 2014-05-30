@@ -32,6 +32,7 @@ import java.util.List;
 import dev.okhotny.TVCalendar.database.DatabaseHelper;
 import dev.okhotny.TVCalendar.providers.SimpleCallback;
 import dev.okhotny.TVCalendar.providers.model.Actor;
+import dev.okhotny.TVCalendar.providers.model.Banner;
 import dev.okhotny.TVCalendar.providers.model.Banners;
 import dev.okhotny.TVCalendar.providers.model.Comment;
 import dev.okhotny.TVCalendar.providers.model.Episode;
@@ -129,17 +130,12 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
                         updateBanner();
                     }
                 });
-                TraktTvApi.getSeriesReviews(seriesID, new SimpleCallback<List<Comment>>() {
+                TraktTvApi.getSeriesComments(seriesID, new SimpleCallback<List<Comment>>() {
                     @Override
                     public void done(List<Comment> result) {
                         mReviews = result;
-                        if (mReviews != null && !mReviews.isEmpty()) {
-                            List<Card> comments = new ArrayList<Card>(mReviews.size());
-                            for (Comment e : mReviews) {
-                                comments.add(new CommentCard(mOverviewAdapter.getContext(), e));
-                            }
-                            mOverviewAdapter.addAll(comments);
-                        }
+                        mViewPager.getAdapter().notifyDataSetChanged();
+                        mTabsStrip.notifyDataSetChanged();
 
                     }
                 });
@@ -248,13 +244,8 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         List<Card> cardList = new ArrayList<Card>(2);
         cardList.add(new OverviewCard(this, mItem));
         cardList.add(new DetailsCard(this, mItem));
-        if (mReviews != null) {
-            for (Comment e : mReviews) {
-                cardList.add(new CommentCard(this, e));
-            }
-        }
         mOverviewAdapter = new CardArrayAdapter(this, cardList);
-        mOverviewAdapter.setInnerViewTypeCount(3);
+        mOverviewAdapter.setInnerViewTypeCount(2);
         view.setAdapter(mOverviewAdapter);
         return view;
     }
@@ -280,6 +271,40 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         }
         view.setAdapter(new CardGridArrayAdapter(this, cardList));
         return view;
+    }
+
+    private View createBannersView() {
+        CardGridView view = (CardGridView) LayoutInflater.from(this).inflate(R.layout.details_card_actor_grid, null);
+        view.setOnScrollListener(this);
+        List<Card> cardList = new ArrayList<Card>(mBanners.getPosterList().size() + mBanners.getFanartList().size());
+        for (Banner e : mBanners.getPosterList()) {
+            cardList.add(new BannerCard(this, e));
+        }
+        for (Banner e : mBanners.getFanartList()) {
+            cardList.add(new BannerCard(this, e));
+        }
+
+        for (Banner e : mBanners.getSeasonList()) {
+            cardList.add(new BannerCard(this, e));
+        }
+        for (Banner e : mBanners.getSeriesList()) {
+            cardList.add(new BannerCard(this, e));
+        }
+        view.setAdapter(new CardGridArrayAdapter(this, cardList));
+        return view;
+
+    }
+
+    private View createReviewsView() {
+        CardListView view = (CardListView) LayoutInflater.from(this).inflate(R.layout.details_card_episode_list, null);
+        view.setOnScrollListener(this);
+        List<Card> cardList = new ArrayList<Card>(mReviews.size());
+        for (Comment e : mReviews) {
+            cardList.add(new CommentCard(this, e));
+        }
+        view.setAdapter(new CardArrayAdapter(this, cardList));
+        return view;
+
     }
 
     @Override
@@ -333,11 +358,24 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         public View getView(int position, ViewPager pager) {
             if (position == 0) {
                 return createOverviewView();
-            } else if (position == 1 && (mActorList != null && !mActorList.isEmpty())) {
-                return createActorsView();
-            } else {
-                return createSeasonView(mSeasonList.valueAt(mSeasonList.size() - 1 - (position - (mActorList == null || mActorList.isEmpty() ? 1 : 2))).SeasonNumber);
             }
+            position--;
+            if (mSeasonList != null && position < mSeasonList.size()) {
+                return createSeasonView(mSeasonList.valueAt(mSeasonList.size() - 1 - (position)).SeasonNumber);
+            }
+            position -= (mSeasonList != null ? mSeasonList.size() : 0);
+            if (position < 1 && mActorList != null) {
+                return createActorsView();
+            }
+            position--;
+            if (position < 1 && mBanners != null) {
+                return createBannersView();
+            }
+            position--;
+            if (position < 1 && mReviews != null) {
+                return createReviewsView();
+            }
+            return null;
         }
 
         /**
@@ -356,8 +394,10 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         @Override
         public int getCount() {
             return (mItem == null ? 0 : 1) +
+                    (mSeasonList != null ? mSeasonList.size() : 0) +
                     (mActorList == null || mActorList.isEmpty() ? 0 : 1) +
-                    (mSeasonList != null ? mSeasonList.size() : 0);
+                    (mBanners == null || mBanners.isEmpty() ? 0 : 1) +
+                    (mReviews == null || mReviews.isEmpty() ? 0 : 1);
         }
 
         /**
@@ -392,18 +432,32 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         public CharSequence getPageTitle(int position) {
             if (position == 0) {
                 return "Overview".toUpperCase();
-            } else if (position == 1 && (mActorList != null && !mActorList.isEmpty())) {
-                return "Actors".toUpperCase();
-            } else {
-                int index = mSeasonList.size() - 1 - (position - (mActorList == null || mActorList.isEmpty() ? 1 : 2));
+            }
+            position--;
+            if (mSeasonList != null && position < mSeasonList.size()) {
+                int index = mSeasonList.size() - 1 - (position);
                 int seasonNumber = mSeasonList.valueAt(index).SeasonNumber;
                 if (seasonNumber == 0) {
                     return "Extras".toUpperCase();
                 }
                 return (String.format("Season %s", seasonNumber)).toUpperCase();
             }
+            position -= (mSeasonList != null ? mSeasonList.size() : 0);
+            if (position < 1 && mActorList != null) {
+                return "Actors";
+            }
+            position--;
+            if (position < 1 && mBanners != null) {
+                return "Graphics";
+            }
+            position--;
+            if (position < 1 && mReviews != null) {
+                return "Reviews";
+            }
+            return null;
         }
     }
+
 
     private class EpisodeCard extends Card {
         private final Episode mEpisode;
@@ -519,9 +573,9 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
             cardHeader.setTitle(comment.username);
             addCardHeader(cardHeader);
 
-//            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
-//            thumb.setUrlResource(comment.avatar);
-//            addCardThumbnail(thumb);
+            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
+            thumb.setUrlResource(comment.avatar);
+            addCardThumbnail(thumb);
 
         }
 
@@ -532,4 +586,18 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         }
     }
 
+    private class BannerCard extends Card {
+        public BannerCard(Context context, Banner banner) {
+            super(context);
+
+            CardHeader cardHeader = new CardHeader(context);
+            cardHeader.setTitle(banner.getBannerType().name());
+            addCardHeader(cardHeader);
+
+            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
+            thumb.setUrlResource(banner.getUrl());
+            addCardThumbnail(thumb);
+            thumb.setupImagePopup();
+        }
+    }
 }

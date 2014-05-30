@@ -37,32 +37,16 @@ public class Banners {
         return seriesList;
     }
 
-    public void setSeriesList(List<Banner> seriesList) {
-        this.seriesList = seriesList;
-    }
-
     public List<Banner> getSeasonList() {
         return seasonList;
-    }
-
-    public void setSeasonList(List<Banner> seasonList) {
-        this.seasonList = seasonList;
     }
 
     public List<Banner> getPosterList() {
         return posterList;
     }
 
-    public void setPosterList(List<Banner> posterList) {
-        this.posterList = posterList;
-    }
-
     public List<Banner> getFanartList() {
         return fanartList;
-    }
-
-    public void setFanartList(List<Banner> fanartList) {
-        this.fanartList = fanartList;
     }
 
     void addSeriesBanner(Banner banner) {

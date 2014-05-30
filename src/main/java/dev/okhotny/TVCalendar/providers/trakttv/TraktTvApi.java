@@ -25,13 +25,8 @@ public class TraktTvApi {
         TrackTvJsonParser.getSeriesList(url, callback);
     }
 
-    public static void getSeriesReviews(final String id, final SimpleCallback<List<Comment>> callback) {
-        String url = new StringBuilder().append(API_BASE_URL).append("/show").append("/comments").append(JSON_EXTENSION).append("/").append(sApiKey).append("/").append(id).append("/reviews").toString();
-        TrackTvJsonParser.getSeriesComments(url, callback);
-    }
-
-    public static void getSeriesShouts(final String id, final SimpleCallback<List<Comment>> callback) {
-        String url = new StringBuilder().append(API_BASE_URL).append("/show").append("/comments").append(JSON_EXTENSION).append("/").append(sApiKey).append("/").append(id).append("/shouts").toString();
+    public static void getSeriesComments(final String id, final SimpleCallback<List<Comment>> callback) {
+        String url = new StringBuilder().append(API_BASE_URL).append("/show").append("/comments").append(JSON_EXTENSION).append("/").append(sApiKey).append("/").append(id).toString();
         TrackTvJsonParser.getSeriesComments(url, callback);
     }
 
