@@ -146,14 +146,14 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
 
     private void updateBanner() {
         if (TextUtils.isEmpty(mItem.getBanner())) {
-        } else if (mBanners == null || mBanners.isEmpty()) {
+        } else if (mBanners == null || mBanners.getFanartList().isEmpty()) {
             mHeaderPicture.setResourceIds(mItem.getBanner());
-        } else if (mBanners.getSeasonList() != null && !mBanners.getSeasonList().isEmpty()) {
-//            List<String> urls = new ArrayList<String>(mBanners.getSeasonList().size());
-//            for (Banner banner : mBanners.getSeasonList()) {
-//                urls.add(banner.getUrl());
-//            }
-//            mHeaderPicture.setResourceIds(urls);
+        } else {
+            List<String> urls = new ArrayList<String>(mBanners.getFanartList().size());
+            for (Banner banner : mBanners.getFanartList()) {
+                urls.add(banner.getUrl());
+            }
+            mHeaderPicture.setResourceIds(urls);
         }
 
     }
@@ -278,16 +278,6 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         view.setOnScrollListener(this);
         List<Card> cardList = new ArrayList<Card>(mBanners.getPosterList().size() + mBanners.getFanartList().size());
         for (Banner e : mBanners.getPosterList()) {
-            cardList.add(new BannerCard(this, e));
-        }
-        for (Banner e : mBanners.getFanartList()) {
-            cardList.add(new BannerCard(this, e));
-        }
-
-        for (Banner e : mBanners.getSeasonList()) {
-            cardList.add(new BannerCard(this, e));
-        }
-        for (Banner e : mBanners.getSeriesList()) {
             cardList.add(new BannerCard(this, e));
         }
         view.setAdapter(new CardGridArrayAdapter(this, cardList));
@@ -448,11 +438,11 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
             }
             position--;
             if (position < 1 && mBanners != null) {
-                return "Graphics";
+                return "Posters";
             }
             position--;
             if (position < 1 && mReviews != null) {
-                return "Reviews";
+                return "Comments";
             }
             return null;
         }
