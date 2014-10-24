@@ -38,15 +38,6 @@ import dev.okhotny.TVCalendar.providers.model.Comment;
 import dev.okhotny.TVCalendar.providers.model.Episode;
 import dev.okhotny.TVCalendar.providers.model.Season;
 import dev.okhotny.TVCalendar.providers.model.Series;
-import dev.okhotny.TVCalendar.providers.thetvdb.TheTVDBApi;
-import dev.okhotny.TVCalendar.providers.trakttv.TraktTvApi;
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardExpand;
-import it.gmariotti.cardslib.library.internal.CardGridArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.view.CardGridView;
-import it.gmariotti.cardslib.library.view.CardListView;
 
 public class DetailsActivity extends FragmentActivity implements AbsListView.OnScrollListener {
 
@@ -67,7 +58,6 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
     private KenBurnsView mHeaderPicture;
     private View mPlaceHolderView;
     private List<Comment> mReviews;
-    private CardArrayAdapter mOverviewAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,64 +228,6 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
                 .show();
     }
 
-    public View createOverviewView() {
-        CardListView view = (CardListView) LayoutInflater.from(this).inflate(R.layout.details_card_overview_list, null);
-        view.setOnScrollListener(this);
-        List<Card> cardList = new ArrayList<Card>(2);
-        cardList.add(new OverviewCard(this, mItem));
-        cardList.add(new DetailsCard(this, mItem));
-        mOverviewAdapter = new CardArrayAdapter(this, cardList);
-        mOverviewAdapter.setInnerViewTypeCount(2);
-        view.setAdapter(mOverviewAdapter);
-        return view;
-    }
-
-    public View createSeasonView(int seasondId) {
-        CardListView view = (CardListView) LayoutInflater.from(this).inflate(R.layout.details_card_episode_list, null);
-        view.setOnScrollListener(this);
-        List<Episode> episodeList = mSeasonList.get(seasondId).EpisodeList;
-        List<Card> cardList = new ArrayList<Card>(episodeList.size());
-        for (Episode e : episodeList) {
-            cardList.add(new EpisodeCard(this, e));
-        }
-        view.setAdapter(new CardArrayAdapter(this, cardList));
-        return view;
-    }
-
-    public View createActorsView() {
-        CardGridView view = (CardGridView) LayoutInflater.from(this).inflate(R.layout.details_card_actor_grid, null);
-        view.setOnScrollListener(this);
-        List<Card> cardList = new ArrayList<Card>(mActorList.size());
-        for (Actor e : mActorList) {
-            cardList.add(new ActorCard(this, e));
-        }
-        view.setAdapter(new CardGridArrayAdapter(this, cardList));
-        return view;
-    }
-
-    private View createBannersView() {
-        CardGridView view = (CardGridView) LayoutInflater.from(this).inflate(R.layout.details_card_actor_grid, null);
-        view.setOnScrollListener(this);
-        List<Card> cardList = new ArrayList<Card>(mBanners.getPosterList().size() + mBanners.getFanartList().size());
-        for (Banner e : mBanners.getPosterList()) {
-            cardList.add(new BannerCard(this, e));
-        }
-        view.setAdapter(new CardGridArrayAdapter(this, cardList));
-        return view;
-
-    }
-
-    private View createReviewsView() {
-        CardListView view = (CardListView) LayoutInflater.from(this).inflate(R.layout.details_card_episode_list, null);
-        view.setOnScrollListener(this);
-        List<Card> cardList = new ArrayList<Card>(mReviews.size());
-        for (Comment e : mReviews) {
-            cardList.add(new CommentCard(this, e));
-        }
-        view.setAdapter(new CardArrayAdapter(this, cardList));
-        return view;
-
-    }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -347,23 +279,23 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
          */
         public View getView(int position, ViewPager pager) {
             if (position == 0) {
-                return createOverviewView();
+                //return createOverviewView();
             }
             position--;
             if (mSeasonList != null && position < mSeasonList.size()) {
-                return createSeasonView(mSeasonList.valueAt(mSeasonList.size() - 1 - (position)).SeasonNumber);
+                //return createSeasonView(mSeasonList.valueAt(mSeasonList.size() - 1 - (position)).SeasonNumber);
             }
             position -= (mSeasonList != null ? mSeasonList.size() : 0);
             if (position < 1 && mActorList != null) {
-                return createActorsView();
+                //return createActorsView();
             }
             position--;
             if (position < 1 && mBanners != null) {
-                return createBannersView();
+                //return createBannersView();
             }
             position--;
             if (position < 1 && mReviews != null) {
-                return createReviewsView();
+                //return createReviewsView();
             }
             return null;
         }
@@ -448,146 +380,4 @@ public class DetailsActivity extends FragmentActivity implements AbsListView.OnS
         }
     }
 
-
-    private class EpisodeCard extends Card {
-        private final Episode mEpisode;
-
-        public EpisodeCard(Context context, Episode episode) {
-            super(context, R.layout.details_card_episode_inner);
-
-            mEpisode = episode;
-
-            CardHeader cardHeader = new CardHeader(context);
-            cardHeader.setTitle(String.format("%02d %s", episode.getEpisodeNumber(), episode.getEpisodeName()));
-            cardHeader.setButtonExpandVisible(true);
-
-            addCardHeader(cardHeader);
-
-            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
-            thumb.setUrlResource(episode.getFilename());
-            addCardThumbnail(thumb);
-            thumb.setupImagePopup();
-
-            CardExpand expand = new CardExpand(context);
-            expand.setTitle(episode.getOverview());
-            addCardExpand(expand);
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-            TextView first_aired = (TextView) view.findViewById(R.id.details_card_episode_inner_first_aired);
-            if (mEpisode.getFirstAired() != null) {
-                first_aired.setText(mEpisode.getFirstAired().toString());
-            }
-
-            RatingBar rating = (RatingBar) view.findViewById(R.id.details_card_episode_inner_rating);
-            rating.setRating(mEpisode.getRating() / 2);
-        }
-    }
-
-    private class ActorCard extends Card {
-        private final Actor mActor;
-
-        public ActorCard(Context context, Actor actor) {
-            super(context, R.layout.details_card_actor_inner);
-            mActor = actor;
-            CardHeader cardHeader = new CardHeader(context);
-            cardHeader.setTitle(actor.getName());
-            addCardHeader(cardHeader);
-
-            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
-            thumb.setUrlResource(actor.getImage());
-            addCardThumbnail(thumb);
-            thumb.setupImagePopup();
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-            TextView role = (TextView) view.findViewById(R.id.details_card_actor_inner_role);
-            role.setText(mActor.getRole());
-        }
-    }
-
-    private class OverviewCard extends Card {
-        private final Series mItem;
-
-        public OverviewCard(Context context, Series series) {
-            super(context);
-            mItem = series;
-            setType(0);
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-            TextView title = (TextView) view.findViewById(R.id.card_main_inner_simple_title);
-            title.setText(mItem.getOverview());
-        }
-    }
-
-    private class DetailsCard extends Card {
-        Series mItem;
-
-        public DetailsCard(Context context, Series series) {
-            super(context, R.layout.details_card_overview_inner);
-            mItem = series;
-            setType(1);
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-            TextView airtime = (TextView) view.findViewById(R.id.airtime);
-            if ("Ended".equalsIgnoreCase(mItem.getStatus())) {
-                airtime.setText("This show has ended");
-            } else {
-                airtime.setText(mItem.getAirsDayOfWeek() + " at " + mItem.getAirsTime() + " on " + mItem.getNetwork());
-            }
-            TextView firstaired = (TextView) view.findViewById(R.id.firstaired);
-            firstaired.setText(mItem.getFirstAired());
-            TextView runtime = (TextView) view.findViewById(R.id.runtime);
-            runtime.setText(mItem.getRuntime());
-            TextView genre = (TextView) view.findViewById(R.id.genre);
-            genre.setText(mItem.getGenres());
-        }
-    }
-
-    private class CommentCard extends Card {
-
-        private final Comment mComment;
-
-        public CommentCard(Context context, Comment comment) {
-            super(context);
-            mComment = comment;
-            setType(2);
-
-            CardHeader cardHeader = new CardHeader(context);
-            cardHeader.setTitle(comment.username);
-            addCardHeader(cardHeader);
-
-            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
-            thumb.setUrlResource(comment.avatar);
-            addCardThumbnail(thumb);
-
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-            TextView title = (TextView) view.findViewById(R.id.card_main_inner_simple_title);
-            title.setText(mComment.text);
-        }
-    }
-
-    private class BannerCard extends Card {
-        public BannerCard(Context context, Banner banner) {
-            super(context);
-
-            CardHeader cardHeader = new CardHeader(context);
-            cardHeader.setTitle(banner.getBannerType().name());
-            addCardHeader(cardHeader);
-
-            VolleyCardThumbnail thumb = new VolleyCardThumbnail(context);
-            thumb.setUrlResource(banner.getUrl());
-            addCardThumbnail(thumb);
-            thumb.setupImagePopup();
-        }
-    }
 }

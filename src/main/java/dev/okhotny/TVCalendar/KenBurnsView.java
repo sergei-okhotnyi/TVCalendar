@@ -10,8 +10,6 @@ import android.view.ViewPropertyAnimator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.android.volley.toolbox.NetworkImageView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,10 +23,10 @@ public class KenBurnsView extends FrameLayout {
 
     private final Handler mHandler;
     private final Random random = new Random();
-    private ArrayList<NetworkImageView> mImageViews = new ArrayList<NetworkImageView>(0);
     private int mActiveImageIndex = -1;
     private int mSwapMs = 10000;
     private int mFadeInOutMs = 400;
+    private List<ImageView> mImageViews = new ArrayList<ImageView>();
 
     public KenBurnsView(Context context) {
         this(context, null);
@@ -53,23 +51,23 @@ public class KenBurnsView extends FrameLayout {
 
     public void setResourceIds(String... resourceIds) {
         for (String url : resourceIds) {
-            NetworkImageView imageView = new NetworkImageView(getContext());
+            ImageView imageView = new ImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             addView(imageView, 0);
             mImageViews.add(imageView);
-            imageView.setImageUrl(url, App.sInstance.imageLoader);
+//            imageView.setImageUrl(url, App.sInstance.imageLoader);
         }
         swapImage();
     }
 
     public void setResourceIds(List<String> urls) {
         for (String url : urls) {
-            NetworkImageView imageView = new NetworkImageView(getContext());
+            ImageView imageView = new ImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setAlpha(0.0f);
             addView(imageView);
-            mImageViews.add(imageView);
-            imageView.setImageUrl(url, App.sInstance.imageLoader);
+//            mImageViews.add(imageView);
+//            imageView.setImageUrl(url, App.sInstance.imageLoader);
         }
         swapImage();
     }
