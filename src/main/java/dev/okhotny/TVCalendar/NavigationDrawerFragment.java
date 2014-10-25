@@ -1,16 +1,17 @@
 package dev.okhotny.TVCalendar;
 
 
-import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar;
 import android.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -101,9 +103,9 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        "12332",
-                        "12332",
-                        "12332",
+                        getString(R.string.title_section1),
+                        getString(R.string.title_section2),
+                        getString(R.string.title_section3),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -127,18 +129,17 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
 
-        ActionBar actionBar = getActionBar();
+        android.support.v7.app.ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
         mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),                    /* host Activity */
-                mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
-                R.string.app_name,  /* "open drawer" description for accessibility */
-                R.string.app_name  /* "close drawer" description for accessibility */
+                getActivity(),
+                mDrawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
         ) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -234,7 +235,7 @@ public class NavigationDrawerFragment extends Fragment {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
         if (mDrawerLayout != null && isDrawerOpen()) {
-            //inflater.inflate(R.menu.global, menu);
+            inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -246,6 +247,11 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
+        if (item.getItemId() == R.id.action_example) {
+            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -254,14 +260,13 @@ public class NavigationDrawerFragment extends Fragment {
      * 'context', rather than just what's in the current screen.
      */
     private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
+        android.support.v7.app.ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
     }
 
-    private ActionBar getActionBar() {
-        return getActivity().getActionBar();
+    private android.support.v7.app.ActionBar getActionBar() {
+        return ((ActionBarActivity)getActivity()).getSupportActionBar();
     }
 
     /**
