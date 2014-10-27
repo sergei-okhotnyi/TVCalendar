@@ -37,11 +37,14 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
     public void onNavigationDrawerItemSelected(int position) {
 
         switch (position) {
+            case 0:
+                break;
             case 1:
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, TrendingFragment.newInstance())
                         .commit();
                 break;
+
         }
     }
 
