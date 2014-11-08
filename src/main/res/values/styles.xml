@@ -1,10 +1,8 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="android:windowBackground">@color/main_background</item>
-        <item name="actionBarStyle">@style/MyActionBarStyle</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
-
-    <style name="MyActionBarStyle" parent="Base.Widget.AppCompat.ActionBar"/>
 
 </resources>

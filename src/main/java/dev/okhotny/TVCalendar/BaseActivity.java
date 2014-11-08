@@ -3,6 +3,7 @@ package dev.okhotny.TVCalendar;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -18,6 +19,9 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.base_drawer_layout);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.action_toolbar);
+        setSupportActionBar(toolbar);
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -25,6 +29,7 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
 
     }
 

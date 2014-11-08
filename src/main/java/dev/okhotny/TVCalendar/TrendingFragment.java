@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.trakt.Trakt;
 import com.jakewharton.trakt.entities.TvShow;
@@ -34,9 +32,14 @@ public class TrendingFragment extends Fragment {
         View view = inflater.inflate(R.layout.shows_list, container, false);
         mlist = (RecyclerView) view.findViewById(R.id.list);
         mlist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
         new LoadTask().execute();
 
         return view;
+    }
+
+    public static interface OpenShowCallback {
+        void openShow(TvShow show);
     }
 
     private class LoadTask extends AsyncTask<Void, Void, List<TvShow>> {
@@ -101,20 +104,22 @@ public class TrendingFragment extends Fragment {
 
         private final TextView title;
         private final ImageView image;
+        private final TextView status;
+        private final TextView rating;
 
         public ShowViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
+            status = (TextView) itemView.findViewById(R.id.status);
+            rating = (TextView) itemView.findViewById(R.id.rating);
             image = (ImageView) itemView.findViewById(R.id.image);
         }
 
         public void bind(TvShow tvShow) {
             title.setText(tvShow.title);
+            status.setText(String.format("%d", tvShow.year));
+            rating.setText(String.format("%d%%", tvShow.ratings.percentage));
             Picasso.with(getActivity()).load(tvShow.images.poster).into(image);
         }
-    }
-
-    public static interface OpenShowCallback {
-        void openShow(TvShow show);
     }
 }
