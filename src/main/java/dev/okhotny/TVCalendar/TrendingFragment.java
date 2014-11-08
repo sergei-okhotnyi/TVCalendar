@@ -33,7 +33,6 @@ public class TrendingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shows_list, container, false);
         mlist = (RecyclerView) view.findViewById(R.id.list);
-//        mlist.setLayoutManager(new LinearLayoutManager(getActivity()));
         mlist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         new LoadTask().execute();
 
