@@ -33,6 +33,24 @@
                 android:value="dev.okhotny.TVCalendar.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".SearchActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dev.okhotny.TVCalendar.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+        </activity>
+
         <service
             android:name=".RecommendationsService"
             android:enabled="true"

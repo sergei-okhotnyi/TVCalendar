@@ -8,4 +8,7 @@
     <dimen name="pager_height">48dp</dimen>
 
     <dimen name="details_card_actor_grid_columnwidth">175dp</dimen>
+    <dimen name="navdrawer_width">260sp</dimen>
+    <dimen name="keyline_1">16dp</dimen>
+    <dimen name="navdrawer_chosen_account_height">140dp</dimen>
 </resources>

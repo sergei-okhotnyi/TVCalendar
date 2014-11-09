@@ -19,6 +19,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class TrendingFragment extends Fragment {
 
     private RecyclerView mlist;
@@ -38,8 +41,36 @@ public class TrendingFragment extends Fragment {
         return view;
     }
 
+    public void requestQueryUpdate(String query) {
+
+    }
+
     public static interface OpenShowCallback {
         void openShow(TvShow show);
+    }
+
+    protected static class ShowViewHolder extends RecyclerView.ViewHolder {
+
+        @InjectView(R.id.title)
+        TextView title;
+        @InjectView(R.id.image)
+        ImageView image;
+        @InjectView(R.id.status)
+        TextView status;
+        @InjectView(R.id.rating)
+        TextView rating;
+
+        public ShowViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+        }
+
+        public void bind(TvShow tvShow) {
+            title.setText(tvShow.title);
+            status.setText(String.format("%d", tvShow.year));
+            rating.setText(String.format("%d%%", tvShow.ratings.percentage));
+            Picasso.with(App.sInstance).load(tvShow.images.poster).into(image);
+        }
     }
 
     private class LoadTask extends AsyncTask<Void, Void, List<TvShow>> {
@@ -49,6 +80,7 @@ public class TrendingFragment extends Fragment {
             Trakt trakt = new Trakt();
             trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
             ShowService showService = trakt.showService();
+
             try {
                 return showService.trending();
             } catch (Exception ignored) {
@@ -98,28 +130,5 @@ public class TrendingFragment extends Fragment {
             return mData.size();
         }
 
-    }
-
-    private class ShowViewHolder extends RecyclerView.ViewHolder {
-
-        private final TextView title;
-        private final ImageView image;
-        private final TextView status;
-        private final TextView rating;
-
-        public ShowViewHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            status = (TextView) itemView.findViewById(R.id.status);
-            rating = (TextView) itemView.findViewById(R.id.rating);
-            image = (ImageView) itemView.findViewById(R.id.image);
-        }
-
-        public void bind(TvShow tvShow) {
-            title.setText(tvShow.title);
-            status.setText(String.format("%d", tvShow.year));
-            rating.setText(String.format("%d%%", tvShow.ratings.percentage));
-            Picasso.with(getActivity()).load(tvShow.images.poster).into(image);
-        }
     }
 }

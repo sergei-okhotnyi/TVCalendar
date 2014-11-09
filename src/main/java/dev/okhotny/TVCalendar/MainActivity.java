@@ -2,11 +2,11 @@ package dev.okhotny.TVCalendar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.jakewharton.trakt.entities.TvShow;
 
-
-public class MainActivity extends BaseActivity implements TrendingFragment.OpenShowCallback {
+public class MainActivity extends BaseActivity {
 
 
     @Override
@@ -16,9 +16,20 @@ public class MainActivity extends BaseActivity implements TrendingFragment.OpenS
         setTitle(R.string.my_shows);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                startActivity(new Intent(this, SearchActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
-    public void openShow(TvShow show) {
-        startActivity(new Intent(this, ShowDetailsActivity.class).putExtra("tvdbid", show.tvdb_id));
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }
