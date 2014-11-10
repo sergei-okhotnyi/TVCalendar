@@ -6,18 +6,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import dev.okhotny.TVCalendar.R;
-import dev.okhotny.TVCalendar.ui.fragment.TrendingFragment;
+import dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment;
 
 public class TrendingActivity extends BaseActivity {
 
-    private TrendingFragment mSessionsFragment;
+    private TvShowListFragment mSessionsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trending);
 
-        mSessionsFragment = (TrendingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        mSessionsFragment = (TvShowListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         mSessionsFragment.showTrending();
     }
 

@@ -30,15 +30,15 @@ import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.ui.BaseActivityOnScrollListener;
 import dev.okhotny.TVCalendar.ui.ShowDetailsActivity;
 
-public class TrendingFragment extends Fragment {
+public class TvShowListFragment extends Fragment {
 
     private RecyclerView mlist;
     private ProgressBar mProgress;
     private TextView mMessage;
     private String mQuery;
 
-    public static TrendingFragment newInstance() {
-        return new TrendingFragment();
+    public static TvShowListFragment newInstance() {
+        return new TvShowListFragment();
     }
 
     @Override

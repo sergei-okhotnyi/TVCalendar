@@ -5,5 +5,11 @@
     android:layout_height="match_parent"
     tools:context="dev.okhotny.TVCalendar.ui.MainActivity">
 
+    <fragment
+        android:id="@+id/fragment"
+        class="dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>

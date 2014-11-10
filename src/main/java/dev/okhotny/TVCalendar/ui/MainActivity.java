@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment;
 
 
 public class MainActivity extends BaseActivity {
@@ -15,6 +16,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(R.string.my_shows);
+
+        TvShowListFragment mSessionsFragment = (TvShowListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        mSessionsFragment.showTrending();
+        mSessionsFragment.setOnScrollListener(this);
     }
 
     @Override

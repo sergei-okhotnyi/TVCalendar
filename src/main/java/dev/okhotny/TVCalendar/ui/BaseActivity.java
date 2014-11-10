@@ -9,14 +9,9 @@ import android.view.ViewGroup;
 
 import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.ui.fragment.NavigationDrawerFragment;
-import dev.okhotny.TVCalendar.ui.fragment.TrendingFragment;
 
-public class BaseActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, BaseActivityOnScrollListener {
+public class BaseActivity extends ActionBarActivity implements BaseActivityOnScrollListener {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
 
     @Override
@@ -27,10 +22,9 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
         mToolbar = (Toolbar) findViewById(R.id.action_toolbar);
         setSupportActionBar(mToolbar);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -40,21 +34,6 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
     @Override
     public void setContentView(int layoutResID) {
         LayoutInflater.from(this).inflate(layoutResID, (ViewGroup) findViewById(R.id.container), true);
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-
-        switch (position) {
-            case 0:
-                break;
-            case 1:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, TrendingFragment.newInstance())
-                        .commit();
-                break;
-
-        }
     }
 
     @Override

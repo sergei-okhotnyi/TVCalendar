@@ -1,7 +1,6 @@
 package dev.okhotny.TVCalendar.ui.fragment;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -36,11 +35,6 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     /**
-     * A pointer to the current callbacks instance (the Activity).
-     */
-    private NavigationDrawerCallbacks mCallbacks;
-
-    /**
      * Helper component that ties the action bar to the navigation drawer.
      */
     private ActionBarDrawerToggle mDrawerToggle;
@@ -51,8 +45,6 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-    private CharSequence mTitle;
-    private ViewGroup mDrawerView;
 
     public NavigationDrawerFragment() {
     }
@@ -85,9 +77,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
-        return mDrawerView;
+        return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
     }
 
     /**
@@ -120,7 +110,6 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-                restoreActionBarContext();
             }
 
             @Override
@@ -140,7 +129,6 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-                showGlobalContextActionBar();
             }
         };
 
@@ -167,25 +155,13 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
-        }
-    }
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                break;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mCallbacks = (NavigationDrawerCallbacks) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
     }
 
     @Override
@@ -197,7 +173,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Forward the new configuration the drawer toggle component.
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
@@ -210,34 +185,8 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        android.support.v7.app.ActionBar actionBar = getActionBar();
-        mTitle = actionBar.getTitle();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(R.string.app_name);
-    }
-
-    private void restoreActionBarContext() {
-        android.support.v7.app.ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
     private android.support.v7.app.ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
-    /**
-     * Callbacks interface that all activities using this fragment must implement.
-     */
-    public static interface NavigationDrawerCallbacks {
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
-        void onNavigationDrawerItemSelected(int position);
-    }
 }

@@ -9,11 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import dev.okhotny.TVCalendar.R;
-import dev.okhotny.TVCalendar.ui.fragment.TrendingFragment;
+import dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment;
 
 public class SearchActivity extends BaseActivity {
     private SearchView mSearchView;
-    private TrendingFragment mSessionsFragment;
+    private TvShowListFragment mSessionsFragment;
     private String mQuery;
 
     @Override
@@ -27,7 +27,7 @@ public class SearchActivity extends BaseActivity {
             mSearchView.setQuery(mQuery, false);
         }
 
-        mSessionsFragment = (TrendingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        mSessionsFragment = (TvShowListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         mSessionsFragment.setOnScrollListener(this);
 
     }
