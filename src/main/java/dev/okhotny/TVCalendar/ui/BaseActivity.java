@@ -48,4 +48,7 @@ public class BaseActivity extends ActionBarActivity implements BaseActivityOnScr
         mToolbar.setTranslationY(translationY);
     }
 
+    public Toolbar getToolbarBar() {
+        return mToolbar;
+    }
 }

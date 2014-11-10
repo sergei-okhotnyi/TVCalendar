@@ -9,12 +9,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.BaseActivity;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -90,15 +92,12 @@ public class NavigationDrawerFragment extends Fragment {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
-        android.support.v7.app.ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),
                 mDrawerLayout,
+                getActionBar(),
                 R.string.app_name,
                 R.string.app_name
         ) {
@@ -185,8 +184,8 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private android.support.v7.app.ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    private Toolbar getActionBar() {
+        return ((BaseActivity) getActivity()).getToolbarBar();
     }
 
 }

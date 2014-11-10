@@ -1,12 +1,15 @@
 package dev.okhotny.TVCalendar.ui;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment;
@@ -21,7 +24,6 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
         setTitle(R.string.search);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (mSearchView != null) {
             mSearchView.setQuery(mQuery, false);
@@ -29,7 +31,6 @@ public class SearchActivity extends BaseActivity {
 
         mSessionsFragment = (TvShowListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         mSessionsFragment.setOnScrollListener(this);
-
     }
 
 
@@ -49,7 +50,8 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public boolean onQueryTextSubmit(String s) {
                         view.clearFocus();
-                        mSessionsFragment.requestQueryUpdate(s);
+                        mQuery = s;
+                        mSessionsFragment.requestQueryUpdate(mQuery);
                         return true;
                     }
 
