@@ -11,20 +11,21 @@ import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.ui.fragment.NavigationDrawerFragment;
 import dev.okhotny.TVCalendar.ui.fragment.TrendingFragment;
 
-public class BaseActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class BaseActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, BaseActivityOnScrollListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.base_drawer_layout);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.action_toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.action_toolbar);
+        setSupportActionBar(mToolbar);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -54,6 +55,18 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
                 break;
 
         }
+    }
+
+    @Override
+    public void onScroll(int dx, int dy) {
+        float translationY = mToolbar.getTranslationY() - dy;
+        if (translationY > 0) {
+            translationY = 0;
+        } else if (translationY < -mToolbar.getBottom()) {
+            translationY = -mToolbar.getBottom();
+        }
+
+        mToolbar.setTranslationY(translationY);
     }
 
 }

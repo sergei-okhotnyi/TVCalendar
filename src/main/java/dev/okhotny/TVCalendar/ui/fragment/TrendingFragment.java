@@ -27,6 +27,7 @@ import butterknife.InjectView;
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.BuildConfig;
 import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.BaseActivityOnScrollListener;
 import dev.okhotny.TVCalendar.ui.ShowDetailsActivity;
 
 public class TrendingFragment extends Fragment {
@@ -57,6 +58,20 @@ public class TrendingFragment extends Fragment {
 
     public void showTrending() {
         new TrendingTask().execute();
+    }
+
+    public void setOnScrollListener(final BaseActivityOnScrollListener listener) {
+        if (listener == null) {
+            mlist.setOnScrollListener(null);
+        } else {
+            mlist.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    listener.onScroll(dx, dy);
+                }
+            });
+        }
     }
 
     protected static class ShowViewHolder extends RecyclerView.ViewHolder {

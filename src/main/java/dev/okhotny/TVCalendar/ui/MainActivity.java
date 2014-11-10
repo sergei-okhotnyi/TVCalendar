@@ -10,7 +10,6 @@ import dev.okhotny.TVCalendar.R;
 
 public class MainActivity extends BaseActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

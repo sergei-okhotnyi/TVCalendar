@@ -28,6 +28,7 @@ public class SearchActivity extends BaseActivity {
         }
 
         mSessionsFragment = (TrendingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        mSessionsFragment.setOnScrollListener(this);
 
     }
 
