@@ -1,4 +1,4 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.service;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.graphics.Palette;
-import android.util.Log;
 
 import com.jakewharton.trakt.Trakt;
 import com.jakewharton.trakt.entities.TvShow;
@@ -22,9 +21,14 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.List;
 
+import dev.okhotny.TVCalendar.App;
+import dev.okhotny.TVCalendar.BuildConfig;
+import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.ShowDetailsActivity;
+
 public class RecommendationsService extends IntentService {
 
-    private static final int MAX_RECOMMENDATIONS = 10;
+    private static final int MAX_RECOMMENDATIONS = 5;
     private NotificationManager mNotificationManager;
 
     public RecommendationsService() {
@@ -33,7 +37,6 @@ public class RecommendationsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("RecommendationService", "onHandleIntent");
         Trakt trakt = new Trakt();
         trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
         ShowService showService = trakt.showService();

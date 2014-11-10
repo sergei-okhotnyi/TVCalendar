@@ -1,9 +1,11 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import dev.okhotny.TVCalendar.R;
 
 
 public class MainActivity extends BaseActivity {

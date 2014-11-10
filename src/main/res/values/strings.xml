@@ -10,4 +10,9 @@
     <string name="main_no_data">No favored series yet.\nUse search to add one.</string>
     <string name="my_shows">My shows</string>
     <string name="discover">Discover new shows</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="title_activity_trending">Trending</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

@@ -1,6 +1,8 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.ui;
 
 import android.os.Bundle;
+
+import dev.okhotny.TVCalendar.R;
 
 
 public class ShowDetailsActivity extends BaseActivity {

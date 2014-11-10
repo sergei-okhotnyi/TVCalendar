@@ -1,5 +1,6 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.ui.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jakewharton.trakt.Trakt;
 import com.jakewharton.trakt.entities.TvShow;
+import com.jakewharton.trakt.services.SearchService;
 import com.jakewharton.trakt.services.ShowService;
 import com.squareup.picasso.Picasso;
 
@@ -21,12 +24,19 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import dev.okhotny.TVCalendar.App;
+import dev.okhotny.TVCalendar.BuildConfig;
+import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.ShowDetailsActivity;
 
 public class TrendingFragment extends Fragment {
 
     private RecyclerView mlist;
+    private ProgressBar mProgress;
+    private TextView mMessage;
+    private String mQuery;
 
-    public static Fragment newInstance() {
+    public static TrendingFragment newInstance() {
         return new TrendingFragment();
     }
 
@@ -35,18 +45,18 @@ public class TrendingFragment extends Fragment {
         View view = inflater.inflate(R.layout.shows_list, container, false);
         mlist = (RecyclerView) view.findViewById(R.id.list);
         mlist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-
-        new LoadTask().execute();
-
+        mProgress = (ProgressBar) view.findViewById(R.id.progress);
+        mMessage = (TextView) view.findViewById(R.id.message);
         return view;
     }
 
     public void requestQueryUpdate(String query) {
-
+        mQuery = query;
+        new SearchTask().execute();
     }
 
-    public static interface OpenShowCallback {
-        void openShow(TvShow show);
+    public void showTrending() {
+        new TrendingTask().execute();
     }
 
     protected static class ShowViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +83,15 @@ public class TrendingFragment extends Fragment {
         }
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, List<TvShow>> {
+    private class TrendingTask extends AsyncTask<Void, Void, List<TvShow>> {
+
+        @Override
+        protected void onPreExecute() {
+            mProgress.setVisibility(View.VISIBLE);
+            mMessage.setVisibility(View.GONE);
+            mlist.setVisibility(View.GONE);
+            mlist.setAdapter(null);
+        }
 
         @Override
         protected List<TvShow> doInBackground(Void... voids) {
@@ -90,10 +108,32 @@ public class TrendingFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<TvShow> result) {
-            if (result != null) {
+            mProgress.setVisibility(View.GONE);
+            if (result != null && !result.isEmpty()) {
+                mlist.setVisibility(View.VISIBLE);
                 mlist.setAdapter(new ShowViewAdapter(result));
+            } else {
+                mMessage.setVisibility(View.VISIBLE);
+                mMessage.setText(R.string.nothing_found);
             }
         }
+    }
+
+    private class SearchTask extends TrendingTask {
+
+        @Override
+        protected List<TvShow> doInBackground(Void... voids) {
+            Trakt trakt = new Trakt();
+            trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
+            SearchService showService = trakt.searchService();
+
+            try {
+                return showService.shows(mQuery);
+            } catch (Exception ignored) {
+                return null;
+            }
+        }
+
     }
 
     private class ShowViewAdapter extends RecyclerView.Adapter<ShowViewHolder> {
@@ -113,7 +153,7 @@ public class TrendingFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     TvShow tvShow = mData.get(mlist.getChildPosition(view));
-                    ((OpenShowCallback) getActivity()).openShow(tvShow);
+                    startActivity(new Intent(getActivity(), ShowDetailsActivity.class).putExtra("tvdbid", tvShow.tvdb_id));
                 }
             });
             return vh;

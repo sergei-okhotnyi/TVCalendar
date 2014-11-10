@@ -1,4 +1,4 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.ui.fragment;
 
 
 import android.app.Activity;
@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import dev.okhotny.TVCalendar.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

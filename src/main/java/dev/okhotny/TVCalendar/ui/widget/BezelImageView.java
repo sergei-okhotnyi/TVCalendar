@@ -1,4 +1,4 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,6 +15,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import dev.okhotny.TVCalendar.R;
 
 
 /**

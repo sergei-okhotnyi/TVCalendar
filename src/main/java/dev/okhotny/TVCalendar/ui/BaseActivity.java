@@ -1,4 +1,4 @@
-package dev.okhotny.TVCalendar;
+package dev.okhotny.TVCalendar.ui;
 
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -6,6 +6,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.fragment.NavigationDrawerFragment;
+import dev.okhotny.TVCalendar.ui.fragment.TrendingFragment;
 
 public class BaseActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 

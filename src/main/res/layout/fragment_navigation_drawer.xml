@@ -32,7 +32,7 @@
                 android:paddingRight="@dimen/keyline_1"
                 android:paddingTop="@dimen/keyline_1">
 
-                <dev.okhotny.TVCalendar.BezelImageView
+                <dev.okhotny.TVCalendar.ui.widget.BezelImageView
                     android:id="@+id/profile_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
