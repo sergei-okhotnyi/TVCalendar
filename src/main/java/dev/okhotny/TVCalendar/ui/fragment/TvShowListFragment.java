@@ -22,8 +22,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.BuildConfig;
 import dev.okhotny.TVCalendar.R;
@@ -45,7 +43,7 @@ public class TvShowListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shows_list, container, false);
         mlist = (RecyclerView) view.findViewById(R.id.list);
-        mlist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mlist.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
         mMessage = (TextView) view.findViewById(R.id.message);
         return view;
@@ -74,20 +72,18 @@ public class TvShowListFragment extends Fragment {
         }
     }
 
-    protected static class ShowViewHolder extends RecyclerView.ViewHolder {
-
-        @InjectView(R.id.title)
-        TextView title;
-        @InjectView(R.id.image)
-        ImageView image;
-        @InjectView(R.id.status)
-        TextView status;
-        @InjectView(R.id.rating)
-        TextView rating;
+    private static class ShowViewHolder extends RecyclerView.ViewHolder {
+        private TextView title;
+        private ImageView image;
+        private TextView status;
+        private TextView rating;
 
         public ShowViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            title = (TextView) itemView.findViewById(R.id.title);
+            image = (ImageView) itemView.findViewById(R.id.image);
+            status = (TextView) itemView.findViewById(R.id.status);
+            rating = (TextView) itemView.findViewById(R.id.rating);
         }
 
         public void bind(TvShow tvShow) {
@@ -99,6 +95,8 @@ public class TvShowListFragment extends Fragment {
     }
 
     private class TrendingTask extends AsyncTask<Void, Void, List<TvShow>> {
+
+        protected Exception mException;
 
         @Override
         protected void onPreExecute() {
@@ -117,6 +115,7 @@ public class TvShowListFragment extends Fragment {
             try {
                 return showService.trending();
             } catch (Exception ignored) {
+                mException = ignored;
                 return null;
             }
         }
@@ -129,7 +128,11 @@ public class TvShowListFragment extends Fragment {
                 mlist.setAdapter(new ShowViewAdapter(result));
             } else {
                 mMessage.setVisibility(View.VISIBLE);
-                mMessage.setText(R.string.nothing_found);
+                if (mException == null) {
+                    mMessage.setText(R.string.nothing_found);
+                } else {
+                    mMessage.setText(mException.getLocalizedMessage());
+                }
             }
         }
     }
@@ -145,6 +148,7 @@ public class TvShowListFragment extends Fragment {
             try {
                 return showService.shows(mQuery);
             } catch (Exception ignored) {
+                mException = ignored;
                 return null;
             }
         }
