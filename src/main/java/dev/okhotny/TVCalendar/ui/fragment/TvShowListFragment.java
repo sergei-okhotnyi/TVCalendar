@@ -1,9 +1,12 @@
 package dev.okhotny.TVCalendar.ui.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -167,12 +170,23 @@ public class TvShowListFragment extends Fragment {
         public ShowViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View v = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.show_cardview, viewGroup, false);
-            ShowViewHolder vh = new ShowViewHolder(v);
+            final ShowViewHolder vh = new ShowViewHolder(v);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TvShow tvShow = mData.get(mlist.getChildPosition(view));
-                    startActivity(new Intent(getActivity(), ShowDetailsActivity.class).putExtra("tvdbid", tvShow.tvdb_id));
+
+                    Intent intent = new Intent(getActivity(), ShowDetailsActivity.class)
+                            .putExtra("tvdbid", tvShow.tvdb_id)
+                            .putExtra("poster", tvShow.images.poster)
+                            .putExtra("title", tvShow.title);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptionsCompat photo = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), vh.image, "photo");
+                        getActivity().startActivity(intent, photo.toBundle());
+                    } else {
+                        getActivity().startActivity(intent);
+                    }
                 }
             });
             return vh;

@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.ui.fragment.NavigationDrawerFragment;
@@ -16,9 +17,9 @@ public class BaseActivity extends ActionBarActivity implements BaseActivityOnScr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        supportRequestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.base_drawer_layout);
-
         mToolbar = (Toolbar) findViewById(R.id.action_toolbar);
         setSupportActionBar(mToolbar);
 
