@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     tools:context="dev.okhotny.TVCalendar.ui.ShowDetailsActivity">
 
+    <include layout="@layout/toolbar" />
+
     <ImageView
         android:id="@+id/banner"
         android:layout_marginTop="?attr/actionBarSize"

@@ -25,6 +25,14 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.search_activity);
         setTitle(R.string.search);
 
+        getToolbarBar().setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        getToolbarBar().setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         if (mSearchView != null) {
             mSearchView.setQuery(mQuery, false);
         }

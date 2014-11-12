@@ -19,22 +19,25 @@ public class BaseActivity extends ActionBarActivity implements BaseActivityOnScr
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.base_drawer_layout);
-        mToolbar = (Toolbar) findViewById(R.id.action_toolbar);
-        setSupportActionBar(mToolbar);
+    }
 
-        NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override
     public void setContentView(int layoutResID) {
-        LayoutInflater.from(this).inflate(layoutResID, (ViewGroup) findViewById(R.id.container), true);
+        super.setContentView(layoutResID);
+        getToolbarBar();
+        setupNavDrawer();
+    }
+
+    private void setupNavDrawer() {
+        NavigationDrawerFragment drawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        if (drawer != null) {
+            drawer.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        }
     }
 
     @Override
@@ -50,6 +53,13 @@ public class BaseActivity extends ActionBarActivity implements BaseActivityOnScr
     }
 
     public Toolbar getToolbarBar() {
+        if (mToolbar == null) {
+            mToolbar = (Toolbar) findViewById(R.id.action_toolbar);
+            if (mToolbar != null) {
+                setSupportActionBar(mToolbar);
+            }
+        }
         return mToolbar;
     }
+
 }

@@ -1,13 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dev.okhotny.TVCalendar.ui.TrendingActivity">
+    android:fitsSystemWindows="true"
+    tools:context="dev.okhotny.TVCalendar.ui.BaseActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/fragment"
+            class="dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include layout="@layout/toolbar" />
+
+    </FrameLayout>
 
     <fragment
-        android:id="@+id/fragment"
-        class="dev.okhotny.TVCalendar.ui.fragment.TvShowListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:id="@+id/navigation_drawer"
+        android:name="dev.okhotny.TVCalendar.ui.fragment.NavigationDrawerFragment"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        tools:layout="@layout/fragment_navigation_drawer" />
 
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
+

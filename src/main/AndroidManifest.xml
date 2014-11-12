@@ -56,14 +56,14 @@
             android:enabled="true"
             android:exported="true" />
 
-        <receiver
+        <!--receiver
             android:name="dev.okhotny.TVCalendar.service.BootupReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
             <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
+        </receiver-->
 
         <activity
             android:name=".ui.TrendingActivity"
