@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.ShareActionProvider;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +40,6 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
     private View mHeaderBox;
     private View mDetailsContainer;
     private ObservableScrollView mScrollView;
-    private ShareActionProvider mShareActionProvider;
     private int mHeaderHeightPixels;
     private int mPhotoHeightPixels;
     private int mMaxHeaderElevation;
@@ -193,11 +192,12 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
     private void bind(TvShow result) {
         mTvShow = result;
         mTitle.setText(mTvShow.title);
-        mSubtitle.setText(mTvShow.certification);
+        mSubtitle.setText(TextUtils.join(", ", mTvShow.genres));
         mOverview.setText(mTvShow.overview);
 
         mFirstime.setText(String.format("%s", mTvShow.first_aired));
         mAirtime.setText(String.format("%s %s on %s", mTvShow.airDay, mTvShow.airTime, mTvShow.network));
+        mRuntime.setText(String.format("%d min.", mTvShow.runtime));
 
         mRating.setText(String.format("%d%%", mTvShow.ratings.percentage));
         mRating_liked.setText(String.format("%d", mTvShow.ratings.loved));
@@ -217,14 +217,14 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_share) {
             startActivity(Intent.createChooser(
                     getDefaultIntent(),
                     getString(R.string.abc_shareactionprovider_share_with)));
             return true;
         }
-        return super.onContextItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     private Intent getDefaultIntent() {
