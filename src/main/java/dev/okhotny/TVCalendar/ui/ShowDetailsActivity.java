@@ -123,7 +123,7 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
 
     private void recomputePhotoAndScrollingMetrics() {
         mHeaderHeightPixels = mHeaderBox.getHeight();
-        mPhotoHeightPixels = Math.min(mImage.getHeight(), mScrollView.getHeight() * 2 / 3);
+        mPhotoHeightPixels = Math.min(mImage.getHeight() > 0 ? mImage.getHeight() : mScrollView.getHeight(), mScrollView.getHeight() / 2);
 
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) mDetailsContainer.getLayoutParams();
         if (mlp.topMargin != mHeaderHeightPixels + mPhotoHeightPixels) {

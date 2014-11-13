@@ -20,8 +20,9 @@
 
         <LinearLayout
             android:id="@+id/details_container"
-            android:layout_width="fill_parent"
+            android:layout_width="@dimen/details_card_width"
             android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
             android:background="?attr/android:windowBackground"
             android:clipToPadding="false"
             android:orientation="vertical"
@@ -57,8 +58,9 @@
 
         <LinearLayout
             android:id="@+id/header"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/details_card_width"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:background="@color/theme_primary"
             android:clipChildren="false"
             android:clipToPadding="false"
