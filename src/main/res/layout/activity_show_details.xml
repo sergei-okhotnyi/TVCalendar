@@ -4,32 +4,49 @@
     android:layout_height="match_parent"
     tools:context="dev.okhotny.TVCalendar.ui.ShowDetailsActivity">
 
-    <include layout="@layout/toolbar" />
-
     <ImageView
         android:id="@+id/banner"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:adjustViewBounds="true"
         android:scaleType="matrix"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <ScrollView
-        android:id="@+id/scroll_container"
-        android:paddingTop="?attr/actionBarSize"
-        android:clipToPadding="false"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/details_container"
+        android:background="?attr/android:windowBackground"
         android:layout_height="fill_parent">
 
+        <include layout="@layout/toolbar" />
 
-    </ScrollView>
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="gone" />
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone" />
+        <ScrollView
+            android:id="@+id/scroll_container"
+            android:clipToPadding="false"
+            android:padding="@dimen/keyline_1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:id="@+id/overview"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="@dimen/keyline_2_inside_1"
+                android:layout_marginStart="@dimen/keyline_2_inside_1"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

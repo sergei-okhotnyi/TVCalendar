@@ -3,10 +3,8 @@
 
 <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/action_toolbar"
-    app:theme="@style/AppActionBarStyle"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    tools:showIn="@layout/base_drawer_layout" />
+    app:theme="@style/AppActionBarStyle"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />

@@ -125,6 +125,9 @@ public class TvShowListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<TvShow> result) {
+            if (isCancelled() || getActivity() == null || getActivity().isFinishing()) {
+                return;
+            }
             mProgress.setVisibility(View.GONE);
             if (result != null && !result.isEmpty()) {
                 mlist.setVisibility(View.VISIBLE);

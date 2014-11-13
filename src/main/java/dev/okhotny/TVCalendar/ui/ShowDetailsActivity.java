@@ -1,22 +1,16 @@
 package dev.okhotny.TVCalendar.ui;
 
-import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.graphics.Palette;
-import android.text.method.CharacterPickerDialog;
-import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.trakt.Trakt;
@@ -24,9 +18,6 @@ import com.jakewharton.trakt.entities.TvShow;
 import com.jakewharton.trakt.enumerations.Extended;
 import com.jakewharton.trakt.services.ShowService;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-
-import java.util.List;
 
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.BuildConfig;
@@ -38,6 +29,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private TvShow mTvShow;
     private View mProgress;
     private ImageView mBanner;
+    private TextView mOverview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +54,20 @@ public class ShowDetailsActivity extends BaseActivity {
         } else {
             bind(mTvShow);
         }
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(findViewById(R.id.details_container), "translationY", height, 0);
+        translationY.setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator());
+        translationY.start();
     }
 
     private void initView() {
         mProgress = findViewById(R.id.progress);
         mBanner = (ImageView) findViewById(R.id.banner);
+        mOverview = (TextView) findViewById(R.id.overview);
     }
 
     private class LoadTask extends AsyncTask<Integer, Void, TvShow> {
@@ -96,6 +97,9 @@ public class ShowDetailsActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(TvShow result) {
+            if (isCancelled() || isFinishing()) {
+                return;
+            }
             mProgress.setVisibility(View.GONE);
             if (result != null) {
                 bind(result);
@@ -109,7 +113,8 @@ public class ShowDetailsActivity extends BaseActivity {
     private void bind(TvShow result) {
         mTvShow = result;
         setTitle(mTvShow.title);
-
+        getToolbarBar().setSubtitle(mTvShow.airDay.name());
+        mOverview.setText(mTvShow.overview);
     }
 
 }
