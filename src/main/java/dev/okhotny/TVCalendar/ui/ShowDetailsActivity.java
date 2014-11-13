@@ -3,13 +3,14 @@ package dev.okhotny.TVCalendar.ui;
 import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,11 @@ public class ShowDetailsActivity extends BaseActivity {
     private View mProgress;
     private ImageView mBanner;
     private TextView mOverview;
+    private TextView mTitle;
+    private TextView mSubtitle;
+    private View mHeader;
+    private View mDetails;
+    private ScrollView mScrollContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,11 @@ public class ShowDetailsActivity extends BaseActivity {
         getToolbarBar().setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else {
+                    finish();
+                }
             }
         });
 
@@ -68,6 +78,18 @@ public class ShowDetailsActivity extends BaseActivity {
         mProgress = findViewById(R.id.progress);
         mBanner = (ImageView) findViewById(R.id.banner);
         mOverview = (TextView) findViewById(R.id.overview);
+        mTitle = (TextView) findViewById(R.id.title);
+        mSubtitle = (TextView) findViewById(R.id.subtitle);
+        mHeader = findViewById(R.id.header);
+        mDetails = findViewById(R.id.details_container);
+        mScrollContainer = (ScrollView) findViewById(R.id.scroll_container);
+    }
+
+    private void bind(TvShow result) {
+        mTvShow = result;
+        mTitle.setText(mTvShow.title);
+        mSubtitle.setText(mTvShow.airDay.name());
+        mOverview.setText(mTvShow.overview);
     }
 
     private class LoadTask extends AsyncTask<Integer, Void, TvShow> {
@@ -108,13 +130,6 @@ public class ShowDetailsActivity extends BaseActivity {
                 finish();
             }
         }
-    }
-
-    private void bind(TvShow result) {
-        mTvShow = result;
-        setTitle(mTvShow.title);
-        getToolbarBar().setSubtitle(mTvShow.airDay.name());
-        mOverview.setText(mTvShow.overview);
     }
 
 }
