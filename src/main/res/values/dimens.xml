@@ -16,4 +16,5 @@
     <dimen name="keyline_2_inside_1">56dp</dimen>
 
     <dimen name="navdrawer_chosen_account_height">140dp</dimen>
+    <dimen name="toolbar_elevation">8dp</dimen>
 </resources>

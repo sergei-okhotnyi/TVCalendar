@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<dev.okhotny.TVCalendar.ui.widget.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll_container"
     android:layout_width="match_parent"
@@ -15,7 +15,8 @@
         <dev.okhotny.TVCalendar.ui.widget.FullSizeImageView
             android:id="@+id/banner"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
 
         <LinearLayout
             android:id="@+id/details_container"
@@ -41,6 +42,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline_2"
                 android:layout_marginRight="@dimen/keyline_1" />
+
+
+            <TextView
+                android:id="@+id/rating"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
 
         </LinearLayout>
 
@@ -84,4 +95,4 @@
         <!-- FAB -->
         <!--include layout="@layout/include_add_schedule_fab" /-->
     </FrameLayout>
-</ScrollView>
+</dev.okhotny.TVCalendar.ui.widget.ObservableScrollView>

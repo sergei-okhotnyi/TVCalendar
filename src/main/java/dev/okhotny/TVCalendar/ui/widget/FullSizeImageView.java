@@ -2,8 +2,6 @@ package dev.okhotny.TVCalendar.ui.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -26,23 +24,6 @@ public class FullSizeImageView extends ImageView {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public FullSizeImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    @Override
-    public void setImageBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-    }
-
-    @Override
-    public void setImageDrawable(Drawable bm) {
-        if (bm != null) {
-            Matrix scale = new Matrix();
-            measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-            float sx = (float) getMeasuredWidth() / bm.getIntrinsicWidth();
-            scale.postScale(sx, sx);
-            setImageMatrix(scale);
-        }
-        super.setImageDrawable(bm);
     }
 
     @Override
