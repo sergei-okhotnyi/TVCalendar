@@ -5,7 +5,6 @@
 
     <dimen name="keyline_1">16dp</dimen>
     <dimen name="keyline_2">72dp</dimen>
-    <dimen name="keyline_2_inside_1">56dp</dimen>
 
     <dimen name="toolbar_autohide_treshhold">36dp</dimen>
     <dimen name="toolbar_elevation">8dp</dimen>
