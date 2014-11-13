@@ -1,10 +1,8 @@
 package dev.okhotny.TVCalendar.ui;
 
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.IntentCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -44,7 +42,6 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.search, menu);
         final MenuItem searchItem = menu.findItem(R.id.menu_search);
         if (searchItem != null) {
@@ -80,7 +77,7 @@ public class SearchActivity extends BaseActivity {
                 }
             }
         }
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

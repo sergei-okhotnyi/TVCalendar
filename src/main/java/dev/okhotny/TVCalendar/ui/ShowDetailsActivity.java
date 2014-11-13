@@ -1,12 +1,17 @@
 package dev.okhotny.TVCalendar.ui;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
@@ -36,13 +41,15 @@ public class ShowDetailsActivity extends BaseActivity {
     private View mHeader;
     private View mDetails;
     private ScrollView mScrollContainer;
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_details);
         initView();
-
+        setTitle("");
+        getToolbarBar().setTitle("");
         getToolbarBar().setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getToolbarBar().setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +65,7 @@ public class ShowDetailsActivity extends BaseActivity {
         ViewCompat.setTransitionName(mBanner, "photo");
 
         if (mTvShow == null) {
-            setTitle(getIntent().getStringExtra("title"));
+            mTitle.setText(getIntent().getStringExtra("title"));
             Picasso.with(this).load(getIntent().getStringExtra("poster")).into(mBanner);
             new LoadTask().execute(getIntent().getIntExtra("tvdbid", 0));
         } else {
@@ -90,6 +97,30 @@ public class ShowDetailsActivity extends BaseActivity {
         mTitle.setText(mTvShow.title);
         mSubtitle.setText(mTvShow.airDay.name());
         mOverview.setText(mTvShow.overview);
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.show_details, menu);
+        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+        if (mTvShow != null) {
+            mShareActionProvider = (ShareActionProvider)
+                    MenuItemCompat.getActionProvider(shareItem);
+            mShareActionProvider.setShareIntent(getDefaultIntent());
+        } else {
+            shareItem.setVisible(false);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, mTvShow.title);
+        intent.putExtra(Intent.EXTRA_TEXT, mTvShow.url);
+        return intent;
     }
 
     private class LoadTask extends AsyncTask<Integer, Void, TvShow> {
@@ -125,6 +156,7 @@ public class ShowDetailsActivity extends BaseActivity {
             mProgress.setVisibility(View.GONE);
             if (result != null) {
                 bind(result);
+                invalidateOptionsMenu();
             } else {
                 Toast.makeText(ShowDetailsActivity.this, mException != null ? mException.getLocalizedMessage() : "TV Show not found", Toast.LENGTH_LONG).show();
                 finish();

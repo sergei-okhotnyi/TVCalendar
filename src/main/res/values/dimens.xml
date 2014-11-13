@@ -12,8 +12,8 @@
     <dimen name="details_card_actor_grid_columnwidth">175dp</dimen>
     <dimen name="navdrawer_width">260sp</dimen>
     <dimen name="keyline_1">16dp</dimen>
-    <dimen name="keyline_2">56dp</dimen>
-    <dimen name="keyline_2_inside_1">46dp</dimen>
+    <dimen name="keyline_2">72dp</dimen>
+    <dimen name="keyline_2_inside_1">56dp</dimen>
 
     <dimen name="navdrawer_chosen_account_height">140dp</dimen>
 </resources>
