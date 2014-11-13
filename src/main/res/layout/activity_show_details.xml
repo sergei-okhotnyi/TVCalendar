@@ -45,8 +45,72 @@
                 android:layout_marginRight="@dimen/keyline_1" />
 
 
+            <View
+                android:background="@color/theme_separator"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/firstime"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
+            <TextView
+                android:id="@+id/airtime"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
+            <TextView
+                android:id="@+id/runtime"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
+            <View
+                android:background="@color/theme_separator"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
             <TextView
                 android:id="@+id/rating"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
+            <TextView
+                android:id="@+id/rating_liked"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_1" />
+
+            <TextView
+                android:id="@+id/rating_hate"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

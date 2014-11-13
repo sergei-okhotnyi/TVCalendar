@@ -11,4 +11,5 @@
 
     <!-- wrap content -->
     <dimen name="details_card_width">-1px</dimen>
+    <dimen name="default_padding">8dp</dimen>
 </resources>

@@ -54,6 +54,12 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
             }
         }
     };
+    private TextView mFirstime;
+    private TextView mAirtime;
+    private TextView mRuntime;
+    private TextView mRating;
+    private TextView mRating_liked;
+    private TextView mRating_hate;
 
     private void recomputeColors() {
         Palette.generateAsync(((BitmapDrawable) mImage.getDrawable()).getBitmap(), new Palette.PaletteAsyncListener() {
@@ -174,13 +180,29 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         mHeaderBox = findViewById(R.id.header);
         mDetailsContainer = findViewById(R.id.details_container);
         mScrollView = (ObservableScrollView) findViewById(R.id.scroll_container);
+
+        mFirstime = (TextView) findViewById(R.id.firstime);
+        mAirtime = (TextView) findViewById(R.id.airtime);
+        mRuntime = (TextView) findViewById(R.id.runtime);
+        mRating = (TextView) findViewById(R.id.rating);
+        mRating_liked = (TextView) findViewById(R.id.rating_liked);
+        mRating_hate = (TextView) findViewById(R.id.rating_hate);
+
     }
 
     private void bind(TvShow result) {
         mTvShow = result;
         mTitle.setText(mTvShow.title);
-        mSubtitle.setText(String.format("%d", mTvShow.year));
+        mSubtitle.setText(mTvShow.certification);
         mOverview.setText(mTvShow.overview);
+
+        mFirstime.setText(String.format("%s", mTvShow.first_aired));
+        mAirtime.setText(String.format("%s %s on %s", mTvShow.airDay, mTvShow.airTime, mTvShow.network));
+
+        mRating.setText(String.format("%d%%", mTvShow.ratings.percentage));
+        mRating_liked.setText(String.format("%d", mTvShow.ratings.loved));
+        mRating_hate.setText(String.format("%d", mTvShow.ratings.hated));
+
     }
 
 
