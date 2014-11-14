@@ -9,7 +9,7 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        applicationId "dev.okhotny.TVCalendar.traktv_java"
+        applicationId "dev.okhotny.TVCalendar.thetvdb_java"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
@@ -22,6 +22,13 @@ android {
     }
 }
 
+configurations {
+    compile.exclude group: 'stax'
+    compile.exclude group: 'xpp3'
+}
+
 dependencies {
+    compile 'com.mobprofs:retrofit-simplexmlconverter:1.1'
+    compile 'org.simpleframework:simple-xml:2.7.1'
     compile 'com.squareup.retrofit:retrofit:+'
 }

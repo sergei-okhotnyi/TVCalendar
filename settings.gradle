@@ -1,1 +1,1 @@
-include ':traktv-java'
+include ':traktv-java','thetvdb-java'

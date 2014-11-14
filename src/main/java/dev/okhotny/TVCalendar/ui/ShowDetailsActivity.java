@@ -21,6 +21,10 @@ import com.jakewharton.trakt.Trakt;
 import com.jakewharton.trakt.entities.TvShow;
 import com.jakewharton.trakt.enumerations.Extended;
 import com.jakewharton.trakt.services.ShowService;
+import com.omertron.thetvdbapi.TheTVDB;
+import com.omertron.thetvdbapi.model.Data;
+import com.omertron.thetvdbapi.model.Series;
+import com.omertron.thetvdbapi.services.SeriesService;
 import com.squareup.picasso.Picasso;
 
 import dev.okhotny.TVCalendar.App;
@@ -251,6 +255,11 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
                 Trakt trakt = new Trakt();
                 trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
                 ShowService showService = trakt.showService();
+
+                TheTVDB tvdb = new TheTVDB();
+                tvdb.setApiKey(App.sInstance.getString(R.string.thetvdb_apikey)).setIsDebug(BuildConfig.DEBUG);
+                SeriesService seriesService = tvdb.seriesService();
+                Data series = seriesService.all(tvdbid);
                 try {
                     return showService.summary(tvdbid, Extended.EXTENDED);
                 } catch (Exception ignored) {

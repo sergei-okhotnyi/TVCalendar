@@ -54,6 +54,7 @@ dependencies {
     compile 'com.squareup:otto:+'
     compile 'com.squareup:dagger:+'
 
+    compile project(':thetvdb-java')
     compile project(':traktv-java')
 
 //    compile 'com.jakewharton:butterknife:6.0.0'
