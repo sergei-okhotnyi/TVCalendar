@@ -2,7 +2,9 @@ package com.jakewharton.trakt.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Ratings {
+import java.io.Serializable;
+
+public class Ratings implements Serializable {
 
     public Integer percentage;
 
