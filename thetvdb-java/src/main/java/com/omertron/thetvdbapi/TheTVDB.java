@@ -31,14 +31,9 @@ import retrofit.RestAdapter;
  */
 public class TheTVDB {
 
+    public static final String PARAM_API_KEY = "apikey";
     private static final String API_URL = "http://thetvdb.com/api/";
     private static final String BANNER_URL = "http://thetvdb.com/banners/";
-    private static final String XML_EXTENSION = ".xml";
-    private static final String SERIES_URL = "/series/";
-    private static final String ALL_URL = "/all/";
-
-    public static final String PARAM_API_KEY = "apikey";
-
     private String apiKey = null;
     private boolean isDebug;
     private RestAdapter restAdapter;
@@ -85,7 +80,7 @@ public class TheTVDB {
     /**
      * Return the current {@link retrofit.RestAdapter} instance. If none exists (first call, API key changed),
      * builds a new one.
-     * <p>
+     * <p/>
      * When building, sets the endpoint, a custom converter ({@link TraktHelper#getGsonBuilder()})
      * and a {@link retrofit.RequestInterceptor} which adds the API key as path param and if available adds
      * authentication to the request header.
@@ -113,8 +108,8 @@ public class TheTVDB {
         return restAdapter;
     }
 
-   public SeriesService seriesService(){
-       return getRestAdapter().create(SeriesService.class);
-   }
+    public SeriesService seriesService() {
+        return getRestAdapter().create(SeriesService.class);
+    }
 
 }

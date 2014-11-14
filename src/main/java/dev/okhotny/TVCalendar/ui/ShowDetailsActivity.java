@@ -24,9 +24,10 @@ import com.jakewharton.trakt.enumerations.Extended;
 import com.jakewharton.trakt.services.ShowService;
 import com.omertron.thetvdbapi.TheTVDB;
 import com.omertron.thetvdbapi.model.Data;
-import com.omertron.thetvdbapi.model.Series;
 import com.omertron.thetvdbapi.services.SeriesService;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
 
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.BuildConfig;
@@ -72,7 +73,6 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
                 mPallete = palette;
                 int darkVibrantColor = palette.getDarkVibrantColor(getResources().getColor(R.color.theme_primary));
                 getToolbarBar().setBackgroundColor(darkVibrantColor);
-                supportInvalidateOptionsMenu();
                 mHeaderBox.setBackgroundColor(darkVibrantColor);
                 ((ImageView) findViewById(R.id.ic_access_time)).getDrawable().setColorFilter(darkVibrantColor, PorterDuff.Mode.SRC_ATOP);
                 ((ImageView) findViewById(R.id.ic_thumbs_up_down)).getDrawable().setColorFilter(darkVibrantColor, PorterDuff.Mode.SRC_ATOP);
@@ -204,9 +204,9 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         mSubtitle.setText(TextUtils.join(", ", mTvShow.genres));
         mOverview.setText(mTvShow.overview);
 
-        mFirstime.setText(String.format("%s", mTvShow.first_aired));
+        mFirstime.setText(new SimpleDateFormat("EEE, d MMMM yyyy").format(mTvShow.first_aired));
         mAirtime.setText(String.format("%s %s on %s", mTvShow.airDay, mTvShow.airTime, mTvShow.network));
-        mRuntime.setText(String.format("%d min.", mTvShow.runtime));
+        mRuntime.setText(String.format("%d min", mTvShow.runtime));
 
         mRating.setText(String.format("%d%%", mTvShow.ratings.percentage));
         mRating_liked.setText(String.format("%d", mTvShow.ratings.loved));

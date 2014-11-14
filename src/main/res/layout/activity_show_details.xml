@@ -53,37 +53,73 @@
                 android:layout_marginTop="@dimen/default_padding"
                 android:background="@color/theme_separator" />
 
-            <ImageView
-                android:id="@+id/ic_access_time"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_1"
-                android:src="@drawable/ic_access_time_white_36dp"
-                android:tint="@color/theme_primary" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/firstime"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                <ImageView
+                    android:id="@+id/ic_access_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/keyline_1"
+                    android:src="@drawable/ic_access_time_white_36dp"
+                    android:tint="@color/theme_primary" />
 
-            <TextView
-                android:id="@+id/airtime"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                <TextView
+                    android:id="@+id/firstime_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:text="First air:" />
 
-            <TextView
-                android:id="@+id/runtime"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                <TextView
+                    android:id="@+id/firstime"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/firstime_label"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/firstime_label" />
+
+                <TextView
+                    android:id="@+id/airtime_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/firstime_label"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:text="Air time:" />
+
+                <TextView
+                    android:id="@+id/airtime"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/airtime_label"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/airtime_label" />
+
+                <TextView
+                    android:id="@+id/runtime_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/airtime_label"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:text="Runtime:" />
+
+                <TextView
+                    android:id="@+id/runtime"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/runtime_label"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/runtime_label" />
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="fill_parent"
