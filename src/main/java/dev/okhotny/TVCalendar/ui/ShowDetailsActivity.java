@@ -1,6 +1,7 @@
 package dev.okhotny.TVCalendar.ui;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -73,6 +74,8 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
                 getToolbarBar().setBackgroundColor(darkVibrantColor);
                 supportInvalidateOptionsMenu();
                 mHeaderBox.setBackgroundColor(darkVibrantColor);
+                ((ImageView) findViewById(R.id.ic_access_time)).getDrawable().setColorFilter(darkVibrantColor, PorterDuff.Mode.SRC_ATOP);
+                ((ImageView) findViewById(R.id.ic_thumbs_up_down)).getDrawable().setColorFilter(darkVibrantColor, PorterDuff.Mode.SRC_ATOP);
             }
         });
     }
@@ -97,11 +100,13 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         });
         mMaxHeaderElevation = getResources().getDimensionPixelSize(R.dimen.toolbar_elevation);
 
+        mTvShow = (TvShow) getIntent().getSerializableExtra("tvshow");
         if (mTvShow == null) {
             mTitle.setText(getIntent().getStringExtra("title"));
             Picasso.with(this).load(getIntent().getStringExtra("poster")).into(mImage);
             new LoadTask().execute(getIntent().getIntExtra("tvdbid", 0));
         } else {
+            Picasso.with(this).load(mTvShow.images.poster).into(mImage);
             bind(mTvShow);
         }
 

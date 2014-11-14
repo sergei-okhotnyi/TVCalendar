@@ -46,12 +46,20 @@
 
 
             <View
-                android:background="@color/theme_separator"
-                android:layout_marginTop="@dimen/default_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/default_padding"
                 android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp" />
+                android:layout_marginTop="@dimen/default_padding"
+                android:background="@color/theme_separator" />
+
+            <ImageView
+                android:id="@+id/ic_access_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_1"
+                android:src="@drawable/ic_access_time_white_36dp"
+                android:tint="@color/theme_primary" />
 
             <TextView
                 android:id="@+id/firstime"
@@ -78,20 +86,28 @@
                 android:layout_marginRight="@dimen/keyline_1" />
 
             <View
-                android:background="@color/theme_separator"
-                android:layout_marginTop="@dimen/default_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/default_padding"
                 android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp" />
+                android:layout_marginTop="@dimen/default_padding"
+                android:background="@color/theme_separator" />
+
+            <ImageView
+                android:id="@+id/ic_thumbs_up_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_1"
+                android:src="@drawable/ic_thumbs_up_down_white_36dp"
+                android:tint="@color/theme_primary" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rating"
                 android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                android:layout_marginRight="@dimen/keyline_1"
+                android:text="Rating" />
 
             <TextView
                 android:id="@+id/rating"
@@ -154,7 +170,7 @@
                 android:layout_marginLeft="@dimen/keyline_2"
                 android:layout_marginRight="@dimen/keyline_1"
                 android:ellipsize="end"
-                android:maxLines="1" />
+                android:maxLines="2" />
 
         </LinearLayout>
 

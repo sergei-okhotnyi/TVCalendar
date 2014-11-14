@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -180,9 +179,7 @@ public class TvShowListFragment extends Fragment {
                     TvShow tvShow = mData.get(mlist.getChildPosition(view));
 
                     Intent intent = new Intent(getActivity(), ShowDetailsActivity.class)
-                            .putExtra("tvdbid", tvShow.tvdb_id)
-                            .putExtra("poster", tvShow.images.poster)
-                            .putExtra("title", tvShow.title);
+                            .putExtra("tvshow", tvShow);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ActivityOptionsCompat photo = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), vh.image, "photo");
