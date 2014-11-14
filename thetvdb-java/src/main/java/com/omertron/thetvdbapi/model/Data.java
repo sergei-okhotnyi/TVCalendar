@@ -8,12 +8,12 @@ import java.util.List;
 /**
  * Created by sergiio on 11/13/2014.
  */
-@Root
+@Root(strict = false)
 public class Data {
 
-    @ElementList(entry ="Series", inline=true)
+    @ElementList(entry = "Series", inline = true, required = false)
     List<Series> Series;
 
-    @ElementList(entry ="Episode", inline=true)
+    @ElementList(entry = "Episode", inline = true, required = false)
     List<Episode> Episode;
 }
