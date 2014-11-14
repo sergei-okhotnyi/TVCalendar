@@ -104,10 +104,10 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         if (mTvShow == null) {
             mTitle.setText(getIntent().getStringExtra("title"));
             Picasso.with(this).load(getIntent().getStringExtra("poster")).into(mImage);
-            new LoadTask().execute(getIntent().getIntExtra("tvdbid", 0));
         } else {
             Picasso.with(this).load(mTvShow.images.poster).into(mImage);
             bind(mTvShow);
+            new LoadTask().execute(mTvShow.tvdb_id);
         }
 
         mScrollView.addOnScrollChangedListener(this);
@@ -257,17 +257,19 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         protected TvShow doInBackground(Integer... voids) {
             Integer tvdbid = voids[0];
             if (tvdbid != 0) {
-                Trakt trakt = new Trakt();
-                trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
-                ShowService showService = trakt.showService();
-
-                TheTVDB tvdb = new TheTVDB();
-                tvdb.setApiKey(App.sInstance.getString(R.string.thetvdb_apikey)).setIsDebug(BuildConfig.DEBUG);
-                SeriesService seriesService = tvdb.seriesService();
-                Data series = seriesService.all(tvdbid);
                 try {
-                    return showService.summary(tvdbid, Extended.EXTENDED);
+//                    Trakt trakt = new Trakt();
+//                    trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
+//                    ShowService showService = trakt.showService();
+//                    TvShow summary = showService.summary(tvdbid, Extended.EXTENDED);
+
+                    TheTVDB tvdb = new TheTVDB();
+                    tvdb.setApiKey(App.sInstance.getString(R.string.thetvdb_apikey)).setIsDebug(BuildConfig.DEBUG);
+                    SeriesService seriesService = tvdb.seriesService();
+                    Data series = seriesService.all(tvdbid);
+                    return mTvShow;
                 } catch (Exception ignored) {
+                    ignored.printStackTrace();
                     mException = ignored;
                 }
             }

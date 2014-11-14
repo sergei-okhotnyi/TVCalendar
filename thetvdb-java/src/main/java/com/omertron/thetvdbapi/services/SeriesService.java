@@ -14,15 +14,15 @@ import retrofit.http.Path;
  * Created by sergiio on 11/13/2014.
  */
 public interface SeriesService {
-    @GET("/{apikey}/series/{seriesid}/all/")
-    Data all(
+
+    @GET("/{apikey}/series/{seriesid}/")
+    Data get(
             @Path("seriesid") int tvdbId
     );
 
-    @GET("/{apikey}/series/{seriesid}/all/{language}.xml")
+    @GET("/{apikey}/series/{seriesid}/all/")
     Data all(
-            @Path("seriesid") int tvdbId,
-            @Path("language") String language
+            @Path("seriesid") int tvdbId
     );
 
     @GET("/{apikey}/series/{seriesid}/banners.xml")
@@ -34,4 +34,5 @@ public interface SeriesService {
     List<Actor> actors(
             @Path("seriesid") int tvdbId
     );
+
 }
