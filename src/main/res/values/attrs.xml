@@ -5,4 +5,14 @@
         <attr name="borderDrawable" format="reference" />
         <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="FloatingActionButton">
+        <attr name="fab_drawable" format="integer" />
+        <attr name="fab_color" format="color" />
+        <attr name="shadowRadius" format="float" />
+        <attr name="shadowDx" format="float" />
+        <attr name="shadowDy" format="float" />
+        <attr name="shadowColor" format="integer" />
+    </declare-styleable>
+
 </resources>

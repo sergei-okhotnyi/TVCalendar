@@ -7,9 +7,14 @@
     <dimen name="keyline_2">72dp</dimen>
 
     <dimen name="toolbar_autohide_treshhold">36dp</dimen>
-    <dimen name="toolbar_elevation">8dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="fab_elevation">8dp</dimen>
 
     <!-- wrap content -->
     <dimen name="details_card_width">-1px</dimen>
     <dimen name="default_padding">8dp</dimen>
+    <dimen name="fab_size">40dp</dimen>
+
+    <dimen name="tvshow_list_min_width">200dp</dimen>
+    <integer name="grid_column_count">2</integer>
 </resources>

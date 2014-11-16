@@ -10,15 +10,10 @@ android {
 
     defaultConfig {
         applicationId "dev.okhotny.TVCalendar.thetvdb_java"
-        minSdkVersion 15
+        minSdkVersion 1
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
-    }
-    buildTypes {
-        release {
-            runProguard false
-        }
     }
 }
 

@@ -19,6 +19,7 @@
 
         <activity
             android:name="dev.okhotny.TVCalendar.ui.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +36,7 @@
         </activity>
         <activity
             android:name="dev.okhotny.TVCalendar.ui.SearchActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName="dev.okhotny.TVCalendar.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

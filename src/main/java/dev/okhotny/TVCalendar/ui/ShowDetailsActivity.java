@@ -1,14 +1,17 @@
 package dev.okhotny.TVCalendar.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.trakt.Trakt;
 import com.jakewharton.trakt.entities.TvShow;
-import com.jakewharton.trakt.enumerations.Extended;
-import com.jakewharton.trakt.services.ShowService;
 import com.omertron.thetvdbapi.TheTVDB;
 import com.omertron.thetvdbapi.model.Data;
 import com.omertron.thetvdbapi.services.SeriesService;
@@ -32,12 +32,15 @@ import java.text.SimpleDateFormat;
 import dev.okhotny.TVCalendar.App;
 import dev.okhotny.TVCalendar.BuildConfig;
 import dev.okhotny.TVCalendar.R;
+import dev.okhotny.TVCalendar.ui.widget.FloatingActionButton;
 import dev.okhotny.TVCalendar.ui.widget.ObservableScrollView;
 
 
 public class ShowDetailsActivity extends BaseActivity implements ObservableScrollView.OnScrollChangedListener {
 
     private TvShow mTvShow;
+    private boolean mIsWatched;
+
     private View mProgress;
     private ImageView mImage;
     private TextView mOverview;
@@ -65,6 +68,15 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
     private TextView mRating;
     private TextView mRating_liked;
     private TextView mRating_hate;
+    private int mAddScheduleButtonHeightPixels;
+    private FloatingActionButton mAddScheduleButton;
+
+    public static int darkenColor(int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.8f;
+        return Color.HSVToColor(hsv);
+    }
 
     private void recomputeColors() {
         Palette.generateAsync(((BitmapDrawable) mImage.getDrawable()).getBitmap(), new Palette.PaletteAsyncListener() {
@@ -73,7 +85,15 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
                 mPallete = palette;
                 int darkVibrantColor = palette.getDarkVibrantColor(getResources().getColor(R.color.theme_primary));
                 getToolbarBar().setBackgroundColor(darkVibrantColor);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(darkenColor(darkVibrantColor));
+                }
+
                 mHeaderBox.setBackgroundColor(darkVibrantColor);
+                mAddScheduleButton.setColor(mPallete.getDarkMutedColor(R.color.theme_primary));
+                mAddScheduleButton.setVisibility(View.VISIBLE);
+                setFabDrawable();
                 ((ImageView) findViewById(R.id.ic_access_time)).getDrawable().setColorFilter(darkVibrantColor, PorterDuff.Mode.SRC_ATOP);
                 ((ImageView) findViewById(R.id.ic_thumbs_up_down)).getDrawable().setColorFilter(darkVibrantColor, PorterDuff.Mode.SRC_ATOP);
             }
@@ -124,6 +144,11 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
 //        ObjectAnimator translationY = ObjectAnimator.ofFloat(findViewById(R.id.details_container), "translationY", height, 0);
 //        translationY.setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator());
 //        translationY.start();
+
+//        if (BuildConfig.DEBUG) {
+//            DesignSpec designSpec = DesignSpec.fromResource(mDetailsContainer, R.raw.dspec);
+//            mDetailsContainer.getOverlay().add(designSpec);
+//        }
     }
 
     @Override
@@ -136,6 +161,7 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
     }
 
     private void recomputePhotoAndScrollingMetrics() {
+        mAddScheduleButtonHeightPixels = mAddScheduleButton.getHeight();
         mHeaderHeightPixels = mHeaderBox.getHeight();
         mPhotoHeightPixels = mScrollView.getHeight() / 3;
 
@@ -156,7 +182,7 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
 
         float newTop = Math.max(mPhotoHeightPixels, scrollY);
         mHeaderBox.setTranslationY(newTop);
-//        mAddScheduleButton.setTranslationY(newTop + mHeaderHeightPixels- mAddScheduleButtonHeightPixels / 2);
+        mAddScheduleButton.setTranslationY(newTop + mHeaderHeightPixels - mAddScheduleButtonHeightPixels / 2);
 
         float gapFillProgress = 1;
         if (mPhotoHeightPixels != 0) {
@@ -164,8 +190,6 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         }
 
         ViewCompat.setElevation(mHeaderBox, gapFillProgress * mMaxHeaderElevation);
-//        ViewCompat.setElevation(mAddScheduleButton, gapFillProgress * mMaxHeaderElevation
-//                + mFABElevation);
 
         // Move background photo (parallax effect)
         mImage.setTranslationY(scrollY * 0.5f);
@@ -196,6 +220,27 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         mRating_liked = (TextView) findViewById(R.id.rating_liked);
         mRating_hate = (TextView) findViewById(R.id.rating_hate);
 
+        mAddScheduleButton = (FloatingActionButton) findViewById(R.id.fabbutton);
+        mAddScheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(ShowDetailsActivity.class.getSimpleName(), "mAddScheduleButton onClick");
+                mIsWatched = !mIsWatched;
+                setFabDrawable();
+            }
+        });
+    }
+
+    private void setFabDrawable() {
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_favorite_white_24dp);
+        if (mIsWatched) {
+            if (mPallete != null) {
+                drawable.setColorFilter(mPallete.getVibrantColor(R.color.theme_accent_2), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                drawable.setColorFilter(R.color.theme_accent_2, PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+        mAddScheduleButton.setDrawable(drawable);
     }
 
     private void bind(TvShow result) {

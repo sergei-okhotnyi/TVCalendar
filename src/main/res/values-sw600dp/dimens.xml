@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="keyline_1">16dp</dimen>
-    <dimen name="keyline_2">72dp</dimen>
+    <dimen name="keyline_1">24dp</dimen>
+    <dimen name="keyline_2">80dp</dimen>
+    <integer name="grid_column_count">4</integer>
 </resources>

@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class TvShowListFragment extends Fragment {
     private ProgressBar mProgress;
     private TextView mMessage;
     private String mQuery;
+    private View mErrorContainer;
 
     public static TvShowListFragment newInstance() {
         return new TvShowListFragment();
@@ -45,10 +47,25 @@ public class TvShowListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shows_list, container, false);
         mlist = (RecyclerView) view.findViewById(R.id.list);
-        mlist.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mlist.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.grid_column_count)));
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
+        mErrorContainer = view.findViewById(R.id.error_container);
         mMessage = (TextView) view.findViewById(R.id.message);
+        view.findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retry();
+            }
+        });
         return view;
+    }
+
+    private void retry() {
+        if (TextUtils.isEmpty(mQuery)) {
+            showTrending();
+        } else {
+            requestQueryUpdate(mQuery);
+        }
     }
 
     public void requestQueryUpdate(String query) {
@@ -103,7 +120,7 @@ public class TvShowListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             mProgress.setVisibility(View.VISIBLE);
-            mMessage.setVisibility(View.GONE);
+            mErrorContainer.setVisibility(View.GONE);
             mlist.setVisibility(View.GONE);
             mlist.setAdapter(null);
         }
@@ -132,7 +149,7 @@ public class TvShowListFragment extends Fragment {
                 mlist.setVisibility(View.VISIBLE);
                 mlist.setAdapter(new ShowViewAdapter(result));
             } else {
-                mMessage.setVisibility(View.VISIBLE);
+                mErrorContainer.setVisibility(View.VISIBLE);
                 if (mException == null) {
                     mMessage.setText(R.string.nothing_found);
                 } else {
