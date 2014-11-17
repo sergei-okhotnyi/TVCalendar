@@ -2,8 +2,7 @@ package com.omertron.thetvdbapi.services;
 
 import com.omertron.thetvdbapi.model.Actor;
 import com.omertron.thetvdbapi.model.Banners;
-import com.omertron.thetvdbapi.model.Data;
-import com.omertron.thetvdbapi.model.Series;
+import com.omertron.thetvdbapi.model.ResponseData;
 
 import java.util.List;
 
@@ -16,12 +15,12 @@ import retrofit.http.Path;
 public interface SeriesService {
 
     @GET("/{apikey}/series/{seriesid}/")
-    Data get(
+    ResponseData get(
             @Path("seriesid") int tvdbId
     );
 
     @GET("/{apikey}/series/{seriesid}/all/")
-    Data all(
+    ResponseData all(
             @Path("seriesid") int tvdbId
     );
 

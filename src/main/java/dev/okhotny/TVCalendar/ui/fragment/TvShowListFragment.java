@@ -1,6 +1,8 @@
 package dev.okhotny.TVCalendar.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ public class TvShowListFragment extends Fragment {
     private TextView mMessage;
     private String mQuery;
     private View mErrorContainer;
+    private Drawable mErrorDrawable;
 
     public static TvShowListFragment newInstance() {
         return new TvShowListFragment();
@@ -57,6 +60,9 @@ public class TvShowListFragment extends Fragment {
                 retry();
             }
         });
+
+        mErrorDrawable = getResources().getDrawable(R.drawable.ic_error_white_18dp);
+        mErrorDrawable.setColorFilter(R.color.theme_accent_2, PorterDuff.Mode.SRC_IN);
         return view;
     }
 
@@ -152,8 +158,10 @@ public class TvShowListFragment extends Fragment {
                 mErrorContainer.setVisibility(View.VISIBLE);
                 if (mException == null) {
                     mMessage.setText(R.string.nothing_found);
+                    mMessage.setCompoundDrawables(null, null, null, null);
                 } else {
                     mMessage.setText(mException.getLocalizedMessage());
+                    mMessage.setCompoundDrawables(mErrorDrawable, null, null, null);
                 }
             }
         }

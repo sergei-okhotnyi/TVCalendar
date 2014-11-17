@@ -5,15 +5,12 @@ import org.simpleframework.xml.Root;
 
 import java.util.List;
 
-/**
- * Created by sergiio on 11/13/2014.
- */
 @Root(strict = false)
-public class Data {
+public class ResponseData {
 
     @ElementList(entry = "Series", inline = true, required = false)
-    List<Series> Series;
+    public List<Series> serieses;
 
     @ElementList(entry = "Episode", inline = true, required = false)
-    List<Episode> Episode;
+    public List<Episode> episodes;
 }

@@ -27,7 +27,8 @@
             android:background="?attr/android:windowBackground"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingTop="16dp">
+            android:paddingBottom="@dimen/keyline_1"
+            android:paddingTop="@dimen/keyline_1">
 
             <ProgressBar
                 android:id="@+id/progress"
@@ -73,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/keyline_2"
-                    android:text="First air:" />
+                    android:text="First air" />
 
                 <TextView
                     android:id="@+id/firstime"
@@ -91,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/firstime_label"
                     android:layout_marginLeft="@dimen/keyline_2"
-                    android:text="Air time:" />
+                    android:text="Air time" />
 
                 <TextView
                     android:id="@+id/airtime"
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/airtime_label"
                     android:layout_marginLeft="@dimen/keyline_2"
-                    android:text="Runtime:" />
+                    android:text="Runtime" />
 
                 <TextView
                     android:id="@+id/runtime"
@@ -130,45 +131,163 @@
                 android:layout_marginTop="@dimen/default_padding"
                 android:background="@color/theme_separator" />
 
-            <ImageView
-                android:id="@+id/ic_thumbs_up_down"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_1"
-                android:src="@drawable/ic_equalizer_white_24dp"
-                android:tint="@color/theme_primary" />
+                android:orientation="horizontal">
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1"
-                android:text="Rating" />
+                <ImageView
+                    android:id="@+id/ic_thumbs_up_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/keyline_1"
+                    android:src="@drawable/ic_equalizer_white_24dp"
+                    android:tint="@color/theme_primary" />
 
-            <TextView
-                android:id="@+id/rating"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                <TextView
+                    android:id="@+id/rating_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/rating"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:text="Rating" />
 
-            <TextView
-                android:id="@+id/rating_liked"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                <TextView
+                    android:id="@+id/rating"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/rating_label" />
 
-            <TextView
-                android:id="@+id/rating_hate"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/rating_liked_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/rating"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/rating"
+                    android:text="Liked" />
+
+                <TextView
+                    android:id="@+id/rating_liked"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/rating"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/rating_liked_label" />
+
+                <TextView
+                    android:id="@+id/rating_hate_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/rating"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/rating_liked"
+                    android:text="Hated" />
+
+                <TextView
+                    android:id="@+id/rating_hate"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/rating"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/rating_hate_label" />
+
+
+                <TextView
+                    android:id="@+id/stats_seasons_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/stats_seasons"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:text="Seasons" />
+
+                <TextView
+                    android:id="@+id/stats_seasons"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rating"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_toRightOf="@id/stats_seasons_label" />
+
+                <TextView
+                    android:id="@+id/stats_episode_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/stats_seasons"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/rating"
+                    android:text="Episodes" />
+
+                <TextView
+                    android:id="@+id/stats_episode"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/stats_seasons"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/stats_episode_label" />
+
+                <TextView
+                    android:id="@+id/stats_time_label"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/stats_seasons"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/stats_episode"
+                    android:text="Time" />
+
+                <TextView
+                    android:id="@+id/stats_time"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/stats_seasons"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/stats_time_label" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/default_padding"
                 android:layout_marginLeft="@dimen/keyline_2"
-                android:layout_marginRight="@dimen/keyline_1" />
+                android:layout_marginTop="@dimen/default_padding"
+                android:background="@color/theme_separator" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/keyline_1"
+                    android:src="@drawable/ic_group_white_24dp"
+                    android:tint="@color/theme_primary" />
+
+                <TextView
+                    android:id="@+id/actors"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:layout_marginRight="@dimen/keyline_1" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

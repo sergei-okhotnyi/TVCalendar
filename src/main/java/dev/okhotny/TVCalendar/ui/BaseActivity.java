@@ -1,11 +1,10 @@
 package dev.okhotny.TVCalendar.ui;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.view.Window;
 
 import dev.okhotny.TVCalendar.R;
@@ -14,11 +13,13 @@ import dev.okhotny.TVCalendar.ui.fragment.NavigationDrawerFragment;
 public class BaseActivity extends ActionBarActivity implements BaseActivityOnScrollListener {
 
     private Toolbar mToolbar;
+    private int mToolbarElevation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
+        mToolbarElevation = getResources().getDimensionPixelSize(R.dimen.toolbar_elevation);
     }
 
     @Override
@@ -48,8 +49,8 @@ public class BaseActivity extends ActionBarActivity implements BaseActivityOnScr
         } else if (translationY < -mToolbar.getBottom()) {
             translationY = -mToolbar.getBottom();
         }
-
         mToolbar.setTranslationY(translationY);
+        ViewCompat.setElevation(mToolbar, mToolbar.getY() >= 0 ? 0 : mToolbarElevation);
     }
 
     public Toolbar getToolbarBar() {
