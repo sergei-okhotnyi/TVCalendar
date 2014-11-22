@@ -42,10 +42,6 @@ public class TvShowListFragment extends Fragment {
     private View mErrorContainer;
     private Drawable mErrorDrawable;
 
-    public static TvShowListFragment newInstance() {
-        return new TvShowListFragment();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shows_list, container, false);

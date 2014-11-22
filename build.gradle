@@ -66,7 +66,8 @@ dependencies {
 
     compile project(':thetvdb-java')
     compile project(':traktv-java')
-    compile 'com.uwetrottmann:tmdb-java:0.7.0';
+
+//    compile 'com.uwetrottmann:tmdb-java:0.7.0';
 
 //    compile 'com.jakewharton:butterknife:6.0.0'
 
