@@ -21,20 +21,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.trakt.Trakt;
-import com.jakewharton.trakt.entities.TvShow;
-import com.jakewharton.trakt.enumerations.Extended;
-import com.jakewharton.trakt.services.ShowService;
-import com.omertron.thetvdbapi.TheTVDB;
-import com.omertron.thetvdbapi.services.SeriesService;
 import com.squareup.picasso.Picasso;
+import com.uwetrottmann.trakt.v2.TraktV2;
+import com.uwetrottmann.trakt.v2.entities.Show;
+import com.uwetrottmann.trakt.v2.enums.Extended;
+import com.uwetrottmann.trakt.v2.services.Shows;
 
 import java.text.SimpleDateFormat;
 
 import dev.okhotny.TVCalendar.BuildConfig;
 import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.model.BigData;
-import dev.okhotny.TVCalendar.model.TvDbSeries;
 import dev.okhotny.TVCalendar.ui.widget.FloatingActionButton;
 import dev.okhotny.TVCalendar.ui.widget.ObservableScrollView;
 
@@ -134,15 +131,15 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         ViewCompat.setTransitionName(mImage, "photo");
 
 
-        mData.traktv = (TvShow) getIntent().getSerializableExtra("tvshow");
+        mData.traktv = (Show) getIntent().getSerializableExtra("tvshow");
         if (mData.traktv == null) {
             mTitle.setText(getIntent().getStringExtra("title"));
             Picasso.with(this).load(getIntent().getStringExtra("poster")).into(mImage);
-            new LoadTask().execute(getIntent().getIntExtra("tvdbid", 0));
+            new LoadTask().execute(getIntent().getStringExtra("tvdbid"));
         } else {
             bind();
-            Picasso.with(this).load(mData.traktv.images.poster).into(mImage);
-            new LoadTask().execute(mData.traktv.tvdb_id);
+            Picasso.with(this).load(mData.traktv.images.fanart.full).into(mImage);
+            new LoadTask().execute(String.valueOf(mData.traktv.ids.trakt));
         }
 
 //        Display display = getWindowManager().getDefaultDisplay();
@@ -258,34 +255,24 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
     }
 
     private void bind() {
-        TvShow traktv = mData.traktv;
+        Show traktv = mData.traktv;
 
         mTitle.setText(traktv.title);
         mSubtitle.setText(TextUtils.join(", ", traktv.genres));
         mOverview.setText(traktv.overview);
 
         mFirstime.setText(new SimpleDateFormat("EEE, d MMMM yyyy").format(traktv.first_aired));
-        mAirtime.setText(String.format("%s %s on %s", traktv.airDay, traktv.airTime, traktv.network));
+        mAirtime.setText(String.format("%s %s on %s", traktv.airs.day, traktv.airs.time, traktv.network));
         mRuntime.setText(String.format("%d min", traktv.runtime));
 
-        mRating.setText(String.format("%d%%", traktv.ratings.percentage));
-        mRating_liked.setText(String.format("%d", traktv.ratings.loved));
-        mRating_hate.setText(String.format("%d", traktv.ratings.hated));
+        mRating.setText(String.format("%d%%", traktv.rating));
 
-        if (mData.thetvdb != null && mData.thetvdb.seasons != null) {
-            mStatsSeasons.setText(String.format("%s", mData.thetvdb.seasons.size()));
-        }
-        if (mData.thetvdb != null && mData.thetvdb.episodes != null) {
-            int totalEpisodes = mData.thetvdb.episodes.size();
-            mStatsEpisodes.setText(String.format("%s", totalEpisodes));
-            int total = traktv.runtime * totalEpisodes;
-            mStatsTime.setText(String.format("%d:%02d", total / 60, total % 60));
-        }
+//        mStatsSeasons.setText(String.format("%s", mData.traktv.a.seasons.size()));
 
-        if (mData.thetvdb != null) {
-            mActors.setText(mData.thetvdb.actors);
-        }
-
+//            int totalEpisodes = traktv..episodes.size();
+//            mStatsEpisodes.setText(String.format("%s", totalEpisodes));
+//            int total = traktv.runtime * totalEpisodes;
+//            mStatsTime.setText(String.format("%d:%02d", total / 60, total % 60));
 
     }
 
@@ -315,11 +302,11 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, mData.traktv.title);
-        intent.putExtra(Intent.EXTRA_TEXT, mData.traktv.url);
+        intent.putExtra(Intent.EXTRA_TEXT, mData.traktv.homepage);
         return intent;
     }
 
-    private class LoadTask extends AsyncTask<Integer, Void, BigData> {
+    private class LoadTask extends AsyncTask<String, Void, BigData> {
 
         protected Exception mException;
 
@@ -329,25 +316,18 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         }
 
         @Override
-        protected BigData doInBackground(Integer... voids) {
+        protected BigData doInBackground(String... voids) {
             BigData mData = new BigData();
-            Integer tvdbid = voids[0];
-            if (tvdbid != 0) {
-                try {
-                    Trakt trakt = new Trakt();
-                    trakt.setApiKey(getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
-                    ShowService showService = trakt.showService();
-                    mData.traktv = showService.summary(tvdbid, Extended.DEFAULT);
+            String tvdbid = voids[0];
+            try {
+                TraktV2 trakt = new TraktV2();
+                trakt.setApiKey(getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
+                Shows showService = trakt.shows();
+                mData.traktv = showService.summary(tvdbid, Extended.FULL);
 
-                    TheTVDB tvdb = new TheTVDB();
-                    tvdb.setApiKey(getString(R.string.thetvdb_apikey)).setIsDebug(BuildConfig.DEBUG);
-                    SeriesService seriesService = tvdb.seriesService();
-                    mData.thetvdb = new TvDbSeries(seriesService.all(tvdbid));
-
-                } catch (Exception ignored) {
-                    ignored.printStackTrace();
-                    mException = ignored;
-                }
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+                mException = ignored;
             }
             return mData;
         }
@@ -360,7 +340,7 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
             mProgress.setVisibility(View.GONE);
             if (result.traktv != null) {
                 mData.traktv = result.traktv;
-                mData.thetvdb = result.thetvdb;
+
                 bind();
                 supportInvalidateOptionsMenu();
             } else {

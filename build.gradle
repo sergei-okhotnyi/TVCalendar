@@ -22,6 +22,14 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 21
@@ -64,7 +72,7 @@ dependencies {
 //     com.squareup:otto:1.3.5'
 //    compile 'com.squareup:dagger:0.9.1'
 
-    compile project(':thetvdb-java')
+//    compile project(':thetvdb-java')
     compile project(':traktv-java')
 
 //    compile 'com.uwetrottmann:tmdb-java:0.7.0';

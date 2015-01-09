@@ -13,10 +13,12 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.graphics.Palette;
 
-import com.jakewharton.trakt.Trakt;
-import com.jakewharton.trakt.entities.TvShow;
-import com.jakewharton.trakt.services.ShowService;
 import com.squareup.picasso.Picasso;
+import com.uwetrottmann.trakt.v2.TraktV2;
+import com.uwetrottmann.trakt.v2.entities.Show;
+import com.uwetrottmann.trakt.v2.entities.TrendingShow;
+import com.uwetrottmann.trakt.v2.enums.Extended;
+import com.uwetrottmann.trakt.v2.services.Shows;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,17 +39,17 @@ public class RecommendationsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Trakt trakt = new Trakt();
+        TraktV2 trakt = new TraktV2();
         trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
-        ShowService showService = trakt.showService();
-        List<TvShow> trending = showService.trending();
+        Shows showService = trakt.shows();
+        List<TrendingShow> trending = showService.trending(1, 5, Extended.DEFAULT_MIN);
 
         int count = 0;
 
-        for (TvShow show : trending) {
+        for (TrendingShow show : trending) {
 
             try {
-                buildRecommendation(getApplicationContext(), show);
+                buildRecommendation(getApplicationContext(), show.show);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -58,7 +60,7 @@ public class RecommendationsService extends IntentService {
         }
     }
 
-    public Notification buildRecommendation(Context context, TvShow movie)
+    public Notification buildRecommendation(Context context, Show movie)
             throws IOException {
 
         if (mNotificationManager == null) {
@@ -70,7 +72,7 @@ public class RecommendationsService extends IntentService {
 
 
         // build the recommendation as a Notification object
-        Bitmap poster = Picasso.with(context).load(movie.images.poster).get();
+        Bitmap poster = Picasso.with(context).load(movie.images.logo.full).get();
 
         Palette palette = Palette.generate(poster);
 
@@ -80,17 +82,17 @@ public class RecommendationsService extends IntentService {
                         .setContentText(movie.overview)
                         .setContentInfo(getString(R.string.app_name))
                         .setGroup("TVShows")
-                        .setPriority(movie.ratings.percentage)
+                        .setPriority((int) Math.round(movie.rating))
                         .setColor(palette.getDarkVibrantColor(Color.BLACK))
                         .setCategory("recommendation")
                         .setLargeIcon(poster)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentIntent(buildPendingIntent(movie.tvdb_id))
+                        .setContentIntent(buildPendingIntent(movie.ids.trakt))
                         .setExtras(extras))
                 .build();
 
         // post the recommendation to the NotificationManager
-        mNotificationManager.notify(movie.tvdb_id, notification);
+        mNotificationManager.notify(movie.ids.trakt, notification);
         mNotificationManager = null;
         return notification;
     }

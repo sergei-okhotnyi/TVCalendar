@@ -19,12 +19,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.jakewharton.trakt.Trakt;
-import com.jakewharton.trakt.entities.TvShow;
-import com.jakewharton.trakt.services.SearchService;
-import com.jakewharton.trakt.services.ShowService;
 import com.squareup.picasso.Picasso;
+import com.uwetrottmann.trakt.v2.TraktV2;
+import com.uwetrottmann.trakt.v2.entities.SearchResult;
+import com.uwetrottmann.trakt.v2.entities.Show;
+import com.uwetrottmann.trakt.v2.entities.TrendingShow;
+import com.uwetrottmann.trakt.v2.enums.Extended;
+import com.uwetrottmann.trakt.v2.enums.Type;
+import com.uwetrottmann.trakt.v2.services.Search;
+import com.uwetrottmann.trakt.v2.services.Shows;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.okhotny.TVCalendar.App;
@@ -107,15 +112,15 @@ public class TvShowListFragment extends Fragment {
             rating = (TextView) itemView.findViewById(R.id.rating);
         }
 
-        public void bind(TvShow tvShow) {
+        public void bind(Show tvShow) {
             title.setText(tvShow.title);
             status.setText(String.format("%d", tvShow.year));
-            rating.setText(String.format("%d%%", tvShow.ratings.percentage));
-            Picasso.with(App.sInstance).load(tvShow.images.poster).into(image);
+            rating.setText(String.format("%d%%", tvShow.rating));
+            Picasso.with(App.sInstance).load(tvShow.images.logo.full).into(image);
         }
     }
 
-    private class TrendingTask extends AsyncTask<Void, Void, List<TvShow>> {
+    private class TrendingTask extends AsyncTask<Void, Void, List<Show>> {
 
         protected Exception mException;
 
@@ -128,13 +133,18 @@ public class TvShowListFragment extends Fragment {
         }
 
         @Override
-        protected List<TvShow> doInBackground(Void... voids) {
-            Trakt trakt = new Trakt();
+        protected List<Show> doInBackground(Void... voids) {
+            TraktV2 trakt = new TraktV2();
             trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
-            ShowService showService = trakt.showService();
+            Shows showService = trakt.shows();
 
             try {
-                return showService.trending();
+                List<TrendingShow> trending = showService.trending(1, 10, Extended.DEFAULT_MIN);
+                List<Show> result = new ArrayList<>(trending.size());
+                for (TrendingShow trend : trending) {
+                    result.add(trend.show);
+                }
+                return result;
             } catch (Exception ignored) {
                 mException = ignored;
                 return null;
@@ -142,7 +152,7 @@ public class TvShowListFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<TvShow> result) {
+        protected void onPostExecute(List<Show> result) {
             if (isCancelled() || getActivity() == null || getActivity().isFinishing()) {
                 return;
             }
@@ -166,13 +176,18 @@ public class TvShowListFragment extends Fragment {
     private class SearchTask extends TrendingTask {
 
         @Override
-        protected List<TvShow> doInBackground(Void... voids) {
-            Trakt trakt = new Trakt();
+        protected List<Show> doInBackground(Void... voids) {
+            TraktV2 trakt = new TraktV2();
             trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
-            SearchService showService = trakt.searchService();
+            Search showService = trakt.search();
 
             try {
-                return showService.shows(mQuery);
+                List<SearchResult> searchResults = showService.textQuery(mQuery, Type.SHOW, 1, 10);
+                List<Show> result = new ArrayList<>(searchResults.size());
+                for (SearchResult trend : searchResults) {
+                    result.add(trend.show);
+                }
+                return result;
             } catch (Exception ignored) {
                 mException = ignored;
                 return null;
@@ -183,9 +198,9 @@ public class TvShowListFragment extends Fragment {
 
     private class ShowViewAdapter extends RecyclerView.Adapter<ShowViewHolder> {
 
-        private final List<TvShow> mData;
+        private final List<Show> mData;
 
-        public ShowViewAdapter(List<TvShow> result) {
+        public ShowViewAdapter(List<Show> result) {
             mData = result;
         }
 
@@ -197,7 +212,7 @@ public class TvShowListFragment extends Fragment {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TvShow tvShow = mData.get(mlist.getChildPosition(view));
+                    Show tvShow = mData.get(mlist.getChildPosition(view));
 
                     Intent intent = new Intent(getActivity(), ShowDetailsActivity.class)
                             .putExtra("tvshow", tvShow);
@@ -215,7 +230,7 @@ public class TvShowListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ShowViewHolder showViewHolder, int i) {
-            TvShow tvShow = mData.get(i);
+            Show tvShow = mData.get(i);
             showViewHolder.bind(tvShow);
         }
 
