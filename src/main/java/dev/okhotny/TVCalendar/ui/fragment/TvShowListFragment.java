@@ -143,7 +143,7 @@ public class TvShowListFragment extends Fragment {
                         Palette.generateAsync(((BitmapDrawable) image.getDrawable()).getBitmap(), new Palette.PaletteAsyncListener() {
                             @Override
                             public void onGenerated(Palette palette) {
-                                background.setBackgroundColor(0x88000000 + palette.getLightMutedColor(Color.WHITE));
+                                background.setBackgroundColor(palette.getLightMutedColor(Color.WHITE));
                             }
                         });
                     }

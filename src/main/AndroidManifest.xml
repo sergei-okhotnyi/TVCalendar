@@ -37,7 +37,7 @@
             android:parentActivityName="dev.okhotny.TVCalendar.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.okhotny.TVCalendar.MainActivity" />
+                android:value="dev.okhotny.TVCalendar.ui.MainActivity" />
         </activity>
         <activity
             android:name="dev.okhotny.TVCalendar.ui.SearchActivity"
@@ -45,7 +45,7 @@
             android:parentActivityName="dev.okhotny.TVCalendar.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.okhotny.TVCalendar.MainActivity" />
+                android:value="dev.okhotny.TVCalendar.ui.MainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -74,7 +74,6 @@
 
         <activity
             android:name=".ui.TrendingActivity"
-            android:label="@string/title_activity_trending"
             android:parentActivityName="dev.okhotny.TVCalendar.ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

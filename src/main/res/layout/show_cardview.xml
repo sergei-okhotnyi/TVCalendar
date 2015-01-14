@@ -3,9 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:minHeight="200dp"
     card_view:cardCornerRadius="2dp"
     card_view:cardUseCompatPadding="true"
     card_view:contentPaddingTop="0dp">
@@ -27,7 +26,8 @@
         <RelativeLayout
             android:id="@+id/background"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:padding="8dp">
 
             <TextView
