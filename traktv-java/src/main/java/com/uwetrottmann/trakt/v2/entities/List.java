@@ -1,9 +1,12 @@
 package com.uwetrottmann.trakt.v2.entities;
 
 import com.uwetrottmann.trakt.v2.enums.ListPrivacy;
+
 import org.joda.time.DateTime;
 
-public class List {
+import java.io.Serializable;
+
+public class List implements Serializable {
 
     public ListIds ids;
     public String name;

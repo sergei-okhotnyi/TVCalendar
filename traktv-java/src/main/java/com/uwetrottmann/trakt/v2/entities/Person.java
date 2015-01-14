@@ -2,7 +2,9 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import org.joda.time.DateTime;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
 
     public String name;
     public PersonIds ids;

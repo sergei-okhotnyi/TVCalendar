@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class Settings {
+import java.io.Serializable;
+
+public class Settings implements Serializable {
 
     public User user;
     public Account account;

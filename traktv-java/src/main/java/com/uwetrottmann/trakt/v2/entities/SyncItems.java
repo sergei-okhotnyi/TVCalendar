@@ -1,9 +1,10 @@
 package com.uwetrottmann.trakt.v2.entities;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SyncItems {
+public class SyncItems implements Serializable {
 
     public List<SyncMovie> movies;
     public List<SyncShow> shows;

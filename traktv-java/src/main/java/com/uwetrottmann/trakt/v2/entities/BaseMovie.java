@@ -2,7 +2,9 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import org.joda.time.DateTime;
 
-public class BaseMovie {
+import java.io.Serializable;
+
+public class BaseMovie implements Serializable {
 
     public Movie movie;
 

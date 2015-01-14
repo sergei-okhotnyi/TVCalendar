@@ -27,8 +27,6 @@ import com.uwetrottmann.trakt.v2.entities.Show;
 import com.uwetrottmann.trakt.v2.enums.Extended;
 import com.uwetrottmann.trakt.v2.services.Shows;
 
-import java.text.SimpleDateFormat;
-
 import dev.okhotny.TVCalendar.BuildConfig;
 import dev.okhotny.TVCalendar.R;
 import dev.okhotny.TVCalendar.model.BigData;
@@ -261,11 +259,11 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         mSubtitle.setText(TextUtils.join(", ", traktv.genres));
         mOverview.setText(traktv.overview);
 
-        mFirstime.setText(new SimpleDateFormat("EEE, d MMMM yyyy").format(traktv.first_aired));
-        mAirtime.setText(String.format("%s %s on %s", traktv.airs.day, traktv.airs.time, traktv.network));
-        mRuntime.setText(String.format("%d min", traktv.runtime));
+//        mFirstime.setText(new SimpleDateFormat("EEE, d MMMM yyyy").format(traktv.first_aired));
+//        mAirtime.setText(String.format("%s %s on %s", traktv.airs.day, traktv.airs.time, traktv.network));
+//        mRuntime.setText(String.format("%d min", traktv.runtime));
 
-        mRating.setText(String.format("%d%%", traktv.rating));
+//        mRating.setText(String.format("%d%%", traktv.rating));
 
 //        mStatsSeasons.setText(String.format("%s", mData.traktv.a.seasons.size()));
 

@@ -2,7 +2,9 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import org.joda.time.DateTime;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment implements Serializable {
 
     public Integer id;
     public Integer parent_id;

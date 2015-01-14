@@ -2,9 +2,10 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Crew {
+public class Crew implements Serializable {
 
     public List<CrewMember> writing;
     public List<CrewMember> production;

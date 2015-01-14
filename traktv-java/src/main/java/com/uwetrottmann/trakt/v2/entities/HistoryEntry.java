@@ -2,7 +2,9 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import org.joda.time.DateTime;
 
-public class HistoryEntry {
+import java.io.Serializable;
+
+public class HistoryEntry implements Serializable {
 
     public DateTime watched_at;
     public String action;

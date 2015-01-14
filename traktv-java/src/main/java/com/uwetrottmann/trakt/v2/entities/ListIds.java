@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class ListIds {
+import java.io.Serializable;
+
+public class ListIds implements Serializable {
 
     public Integer trakt;
     public String slug;

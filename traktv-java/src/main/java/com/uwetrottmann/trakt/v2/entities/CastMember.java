@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class CastMember {
+import java.io.Serializable;
+
+public class CastMember implements Serializable {
 
     public String character;
     public Movie movie;

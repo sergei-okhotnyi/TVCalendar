@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class SearchResult {
+import java.io.Serializable;
+
+public class SearchResult implements Serializable {
 
     public String type;
     public Double score;

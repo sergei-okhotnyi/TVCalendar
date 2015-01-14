@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class Season {
+import java.io.Serializable;
+
+public class Season implements Serializable {
 
     public Integer number;
     public SeasonIds ids;

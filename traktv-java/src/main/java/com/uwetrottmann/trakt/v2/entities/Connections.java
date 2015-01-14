@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class Connections {
+import java.io.Serializable;
+
+public class Connections implements Serializable {
 
     public Boolean facebook;
     public Boolean twitter;

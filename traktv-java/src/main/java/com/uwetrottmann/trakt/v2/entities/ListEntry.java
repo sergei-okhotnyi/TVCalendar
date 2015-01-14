@@ -2,7 +2,9 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import org.joda.time.DateTime;
 
-public class ListEntry {
+import java.io.Serializable;
+
+public class ListEntry implements Serializable {
 
     public DateTime listed_at;
     public Movie movie;

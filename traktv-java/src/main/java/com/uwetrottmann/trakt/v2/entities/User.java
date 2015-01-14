@@ -1,9 +1,12 @@
 package com.uwetrottmann.trakt.v2.entities;
 
 import com.google.gson.annotations.SerializedName;
+
 import org.joda.time.DateTime;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     public String username;
     @SerializedName("private")

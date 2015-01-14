@@ -2,20 +2,29 @@ package com.uwetrottmann.trakt.v2.entities;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BaseShow {
+public class BaseShow implements Serializable {
 
     public Show show;
 
-    /** collection, watched */
+    /**
+     * collection, watched
+     */
     public List<BaseSeason> seasons;
 
-    /** collection */
+    /**
+     * collection
+     */
     public DateTime collected_at;
-    /** watchlist */
+    /**
+     * watchlist
+     */
     public DateTime listed_at;
-    /** watched */
+    /**
+     * watched
+     */
     public int plays;
 
 }

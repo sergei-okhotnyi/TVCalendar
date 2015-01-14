@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class LastActivities {
+import java.io.Serializable;
+
+public class LastActivities implements Serializable {
 
     public LastActivityMore movies;
     public LastActivityMore episodes;

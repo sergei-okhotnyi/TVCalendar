@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class SyncResponse {
+import java.io.Serializable;
+
+public class SyncResponse implements Serializable {
 
     public SyncStats added;
     public SyncStats existing;

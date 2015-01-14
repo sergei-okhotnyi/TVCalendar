@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class CrewMember {
+import java.io.Serializable;
+
+public class CrewMember implements Serializable {
 
     public String job;
     public Movie movie;

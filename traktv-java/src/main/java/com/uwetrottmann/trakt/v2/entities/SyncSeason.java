@@ -1,12 +1,14 @@
 package com.uwetrottmann.trakt.v2.entities;
 
 import com.uwetrottmann.trakt.v2.enums.Rating;
+
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SyncSeason {
+public class SyncSeason implements Serializable {
 
     public Integer number;
     public List<SyncEpisode> episodes;

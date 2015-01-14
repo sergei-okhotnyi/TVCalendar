@@ -1,8 +1,9 @@
 package com.uwetrottmann.trakt.v2.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SyncErrors {
+public class SyncErrors implements Serializable {
 
     public List<SyncMovie> movies;
     public List<SyncShow> shows;

@@ -1,6 +1,8 @@
 package com.uwetrottmann.trakt.v2.entities;
 
-public class Translation {
+import java.io.Serializable;
+
+public class Translation implements Serializable {
 
     public String language;
     public String title;
