@@ -136,21 +136,23 @@ public class TvShowListFragment extends Fragment {
             title.setText(tvShow.title);
             status.setText(String.format("%d - %s", tvShow.year, tvShow.status));
             background.setBackgroundColor(Color.WHITE);
-            Picasso.with(App.sInstance).load(tvShow.images.thumb.full).into(image, new Callback() {
-                @Override
-                public void onSuccess() {
-                    Palette.generateAsync(((BitmapDrawable) image.getDrawable()).getBitmap(), new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-                            background.setBackgroundColor(0x88000000 + palette.getLightMutedColor(Color.WHITE));
-                        }
-                    });
-                }
+            if (tvShow.images != null && tvShow.images.thumb != null) {
+                Picasso.with(App.sInstance).load(tvShow.images.thumb.full).into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Palette.generateAsync(((BitmapDrawable) image.getDrawable()).getBitmap(), new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(Palette palette) {
+                                background.setBackgroundColor(0x88000000 + palette.getLightMutedColor(Color.WHITE));
+                            }
+                        });
+                    }
 
-                @Override
-                public void onError() {
-                }
-            });
+                    @Override
+                    public void onError() {
+                    }
+                });
+            }
         }
     }
 
