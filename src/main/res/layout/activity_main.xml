@@ -6,10 +6,12 @@
     android:fitsSystemWindows="true"
     tools:context="dev.okhotny.TVCalendar.ui.BaseActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
 
         <fragment
             android:id="@+id/fragment"
@@ -17,9 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <include layout="@layout/toolbar" />
-
-    </FrameLayout>
+    </LinearLayout>
 
     <fragment
         android:id="@+id/navigation_drawer"

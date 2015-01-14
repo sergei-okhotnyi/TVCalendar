@@ -99,7 +99,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical" />
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/navdrawer_item_my"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My shows" />
+
+                <TextView
+                    android:id="@+id/navdrawer_item_discover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Discover new shows" />
+
+
+            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 

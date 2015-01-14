@@ -1,7 +1,9 @@
 package dev.okhotny.TVCalendar.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.uwetrottmann.trakt.v2.TraktV2;
 import com.uwetrottmann.trakt.v2.entities.SearchResult;
@@ -40,6 +44,7 @@ import dev.okhotny.TVCalendar.ui.ShowDetailsActivity;
 
 public class TvShowListFragment extends Fragment {
 
+    public static final String MODE = "Mode";
     private RecyclerView mlist;
     private ProgressBar mProgress;
     private TextView mMessage;
@@ -64,6 +69,17 @@ public class TvShowListFragment extends Fragment {
 
         mErrorDrawable = getResources().getDrawable(R.drawable.ic_error_white_18dp);
         mErrorDrawable.setColorFilter(R.color.theme_accent_2, PorterDuff.Mode.SRC_IN);
+
+        if (getArguments() != null && getArguments().containsKey(MODE)) {
+            switch (getArguments().getInt(MODE)) {
+                case 0:
+                    showTrending();
+                    break;
+                case 1:
+                    showPopular();
+                    break;
+            }
+        }
         return view;
     }
 
@@ -84,6 +100,10 @@ public class TvShowListFragment extends Fragment {
         new TrendingTask().execute();
     }
 
+    public void showPopular() {
+        new PopularTask().execute();
+    }
+
     public void setOnScrollListener(final BaseActivityOnScrollListener listener) {
         if (listener == null) {
             mlist.setOnScrollListener(null);
@@ -99,24 +119,38 @@ public class TvShowListFragment extends Fragment {
     }
 
     private static class ShowViewHolder extends RecyclerView.ViewHolder {
+        private View background;
         private TextView title;
         private ImageView image;
         private TextView status;
-        private TextView rating;
 
         public ShowViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             image = (ImageView) itemView.findViewById(R.id.image);
             status = (TextView) itemView.findViewById(R.id.status);
-            rating = (TextView) itemView.findViewById(R.id.rating);
+            background = (View) itemView.findViewById(R.id.background);
         }
 
         public void bind(Show tvShow) {
             title.setText(tvShow.title);
-            status.setText(String.format("%d", tvShow.year));
-            rating.setText(String.format("%d%%", tvShow.rating));
-            Picasso.with(App.sInstance).load(tvShow.images.logo.full).into(image);
+            status.setText(String.format("%d - %s", tvShow.year, tvShow.status));
+            background.setBackgroundColor(Color.WHITE);
+            Picasso.with(App.sInstance).load(tvShow.images.thumb.full).into(image, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Palette.generateAsync(((BitmapDrawable) image.getDrawable()).getBitmap(), new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            background.setBackgroundColor(0x88000000 + palette.getLightMutedColor(Color.WHITE));
+                        }
+                    });
+                }
+
+                @Override
+                public void onError() {
+                }
+            });
         }
     }
 
@@ -139,7 +173,7 @@ public class TvShowListFragment extends Fragment {
             Shows showService = trakt.shows();
 
             try {
-                List<TrendingShow> trending = showService.trending(1, 10, Extended.DEFAULT_MIN);
+                List<TrendingShow> trending = showService.trending(1, 20, Extended.FULLIMAGES);
                 List<Show> result = new ArrayList<>(trending.size());
                 for (TrendingShow trend : trending) {
                     result.add(trend.show);
@@ -171,6 +205,24 @@ public class TvShowListFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private class PopularTask extends TrendingTask {
+
+        @Override
+        protected List<Show> doInBackground(Void... voids) {
+            TraktV2 trakt = new TraktV2();
+            trakt.setApiKey(App.sInstance.getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
+            Shows showService = trakt.shows();
+
+            try {
+                return showService.popular(1, 20, Extended.FULLIMAGES);
+            } catch (Exception ignored) {
+                mException = ignored;
+                return null;
+            }
+        }
+
     }
 
     private class SearchTask extends TrendingTask {

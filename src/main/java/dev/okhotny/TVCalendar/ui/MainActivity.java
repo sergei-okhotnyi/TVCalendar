@@ -18,8 +18,6 @@ public class MainActivity extends BaseActivity {
         setTitle(R.string.my_shows);
 
         TvShowListFragment mSessionsFragment = (TvShowListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        mSessionsFragment.showTrending();
-        mSessionsFragment.setOnScrollListener(this);
     }
 
     @Override
