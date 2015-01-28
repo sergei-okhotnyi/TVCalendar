@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.uwetrottmann.trakt.v2.TraktV2;
 import com.uwetrottmann.trakt.v2.entities.Show;
 import com.uwetrottmann.trakt.v2.enums.Extended;
+import com.uwetrottmann.trakt.v2.services.Seasons;
 import com.uwetrottmann.trakt.v2.services.Shows;
 
 import dev.okhotny.TVCalendar.BuildConfig;
@@ -128,16 +130,13 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         }
         ViewCompat.setTransitionName(mImage, "photo");
 
-
-        mData.traktv = (Show) getIntent().getSerializableExtra("tvshow");
         if (mData.traktv == null) {
-            mTitle.setText(getIntent().getStringExtra("title"));
-            Picasso.with(this).load(getIntent().getStringExtra("poster")).into(mImage);
-            new LoadTask().execute(getIntent().getStringExtra("tvdbid"));
-        } else {
-            bind();
-            Picasso.with(this).load(mData.traktv.images.fanart.full).into(mImage);
-            new LoadTask().execute(String.valueOf(mData.traktv.ids.trakt));
+            mData.traktv = (Show) getIntent().getSerializableExtra("tvshow");
+        }
+        Picasso.with(this).load(mData.traktv.images.fanart.full).into(mImage);
+        bind();
+        if (System.currentTimeMillis() - mData.lastSync > DateUtils.DAY_IN_MILLIS) {
+            new LoadTask().execute(mData);
         }
 
 //        Display display = getWindowManager().getDefaultDisplay();
@@ -304,7 +303,7 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         return intent;
     }
 
-    private class LoadTask extends AsyncTask<String, Void, BigData> {
+    private class LoadTask extends AsyncTask<BigData, Void, Void> {
 
         protected Exception mException;
 
@@ -314,35 +313,45 @@ public class ShowDetailsActivity extends BaseActivity implements ObservableScrol
         }
 
         @Override
-        protected BigData doInBackground(String... voids) {
-            BigData mData = new BigData();
-            String tvdbid = voids[0];
+        protected Void doInBackground(BigData... voids) {
+            BigData mData = voids[0];
             try {
                 TraktV2 trakt = new TraktV2();
                 trakt.setApiKey(getString(R.string.traktv_apikey)).setIsDebug(BuildConfig.DEBUG);
                 Shows showService = trakt.shows();
-                mData.traktv = showService.summary(tvdbid, Extended.FULL);
-
+                String showId = String.valueOf(mData.traktv.ids.trakt);
+                mData.traktv = showService.summary(showId, Extended.FULL);
+                Seasons serviceService = trakt.seasons();
+                mData.seasons = serviceService.summary(showId, Extended.FULL);
+//                Episodes episodeService = trakt.episodes();
+//                mData.episodes = new SparseArray<>(mData.seasons.size());
+//                for (Season season : mData.seasons) {
+//                    if (season.number == 0) continue;
+//                    List<Episode> episodes = new ArrayList<>(season.episode_count);
+//                    mData.episodes.put(season.number, episodes);
+//                    for (int i = 1; i <= season.episode_count; i++) {
+//                        episodes.add(episodeService.summary(showId, season.number, i, Extended.FULLIMAGES));
+//                    }
+//                }
+//                mData.lastSync = System.currentTimeMillis();
             } catch (Exception ignored) {
                 ignored.printStackTrace();
                 mException = ignored;
             }
-            return mData;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(BigData result) {
+        protected void onPostExecute(Void result) {
             if (isCancelled() || isFinishing()) {
                 return;
             }
             mProgress.setVisibility(View.GONE);
-            if (result.traktv != null) {
-                mData.traktv = result.traktv;
-
+            if (mException == null) {
                 bind();
                 supportInvalidateOptionsMenu();
             } else {
-                Toast.makeText(ShowDetailsActivity.this, mException != null ? mException.getLocalizedMessage() : "TV Show not found", Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowDetailsActivity.this, mException.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 finish();
             }
         }
