@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.0.1'
         classpath 'io.fabric.tools:gradle:1.14.4'
     }
 }
@@ -54,8 +54,6 @@ android {
 
 dependencies {
 
-    compile 'org.lucasr.dspec:dspec:0.1.1'
-
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'
@@ -86,6 +84,10 @@ dependencies {
 //    compile 'com.github.mrengineer13:snackbar:0.4.0'
 
     compile 'com.jpardogo.materialtabstrip:library:1.0.7'
+
+    compile('com.mikepenz.materialdrawer:library:0.9.7@aar') {
+        transitive = true
+    }
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile('com.crashlytics.sdk.android:crashlytics:2.0.1@aar') {
